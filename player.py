@@ -30,6 +30,15 @@ class Player(pygame.sprite.Sprite):
 
             self.animations[animation] = import_folder(full_path)
 
+    def animate(self):
+        animation = self.animations["run"]
+        self.frame += self.animation_speed
+
+        if self.frame >= len(animation):
+            self.frame = 0
+
+        self.image = animation[int(self.frame)]
+
     def get_input(self):
         keys = pygame.key.get_pressed()
 
@@ -52,3 +61,4 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.get_input()
+        self.animate()
