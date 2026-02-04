@@ -47,14 +47,25 @@ class Level:
             self.world_shift = 0
             player.speed = 8
 
+    def horizontal_movement_collision(self):
+        player = self.player.sprite
+
+        player.rect.x += int(player.direction.x) * player.speed
+
+        for tile in self.tiles.sprites():
+            if tile.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = tile.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = tile.rect.left
+
     def draw(self):
         # Tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
+        self.scroll_x()
 
         # Player
         self.player.update()
+        self.horizontal_movement_collision()
         self.player.draw(self.display_surface)
-
-        # World
-        self.scroll_x()
