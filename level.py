@@ -7,6 +7,7 @@ from settings import *
 class Level:
     def __init__(self, level_data, surface):
         self.display_surface = surface
+        self.world_shift = 0
 
         self.setup(level_data)
 
@@ -27,4 +28,5 @@ class Level:
                     continue
 
     def draw(self):
+        self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
