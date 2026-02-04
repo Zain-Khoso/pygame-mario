@@ -25,6 +25,8 @@ class Player(pygame.sprite.Sprite):
         self.jump_power = -16
         self.status = "idle"
         self.facing_right = True
+        self.on_ground = False
+        self.on_ceiling = False
 
     def import_character_assets(self):
         for animation in self.animations.keys():
@@ -44,6 +46,13 @@ class Player(pygame.sprite.Sprite):
             self.image = image
         else:
             self.image = pygame.transform.flip(image, True, False)
+
+        if self.on_ground:
+            self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+        elif self.on_ceiling:
+            self.rect = self.image.get_rect(midtop=self.rect.midtop)
+        else:
+            self.rect = self.image.get_rect(center=self.rect.center)
 
     def get_input(self):
         keys = pygame.key.get_pressed()
