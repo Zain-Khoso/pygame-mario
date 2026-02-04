@@ -65,10 +65,11 @@ class Level:
 
         for tile in self.tiles.sprites():
             if tile.rect.colliderect(player.rect):
-                if player.direction.y < 0:
-                    player.rect.top = tile.rect.bottom
-                elif player.direction.y > 0:
+                if player.direction.y > 0:
                     player.rect.bottom = tile.rect.top
+                    player.direction.y = 0
+                elif player.direction.y < 0:
+                    player.rect.top = tile.rect.bottom
 
     def draw(self):
         # Tiles
