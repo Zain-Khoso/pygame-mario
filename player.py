@@ -42,10 +42,9 @@ class Player(pygame.sprite.Sprite):
             self.frame = 0
 
         image = animation[int(self.frame)]
-        if self.facing_right:
-            self.image = image
-        else:
-            self.image = pygame.transform.flip(image, True, False)
+        self.image = (
+            image if self.facing_right else pygame.transform.flip(image, True, False)
+        )
 
         if self.on_ground:
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
