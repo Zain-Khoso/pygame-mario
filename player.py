@@ -7,8 +7,15 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
 
-        self.image = pygame.Surface((32, 64))
-        self.image.fill("cyan")
+        # Loading assets.
+        self.assets_dir = "graphics/character/"
+        self.animations = {"idle": [], "run": [], "jump": [], "fall": []}
+        self.import_character_assets()
+
+        # Sprite
+        self.frame = 0
+        self.animation_speed = 0.15
+        self.image = self.animations["idle"][self.frame]
         self.rect = self.image.get_rect(topleft=pos)
 
         # Movement
@@ -16,12 +23,6 @@ class Player(pygame.sprite.Sprite):
         self.speed = 8
         self.gravity = 0.8
         self.jump_power = -16
-
-        # Animation.
-        self.assets_dir = "graphics/character/"
-        self.animations = {"idle": [], "run": [], "jump": [], "fall": []}
-
-        self.import_character_assets()
 
     def import_character_assets(self):
         for animation in self.animations.keys():
