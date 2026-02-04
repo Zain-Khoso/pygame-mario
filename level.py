@@ -17,6 +17,7 @@ class Level:
         self.setup(level_data)
 
         self.current_player_x = 0
+        self.player_on_ground = False
 
         self.dust_sprite = pygame.sprite.GroupSingle()
 
@@ -115,6 +116,25 @@ class Level:
 
         self.dust_sprite.add(ParticleEffect(pos, "jump"))
 
+    def get_player_on_ground(self):
+        self.player_on_ground = self.player.sprite.on_ground
+
+    def create_landing_dust(self):
+        if (
+            self.player_on_ground
+            or not self.player.sprite.on_ground
+            or self.dust_sprite.sprites()
+        ):
+            return
+
+        if self.player.sprite.facing_right:
+            offset = pygame.math.Vector2(10, 15)
+        else:
+            offset = pygame.math.Vector2(10, -15)
+
+        particles = ParticleEffect(self.player.sprite.rect.midbottom - offset, "land")
+        self.dust_sprite.add(particles)
+
     def draw(self):
         # Particles
         self.dust_sprite.update(self.world_shift)
@@ -127,6 +147,8 @@ class Level:
 
         # Player
         self.player.update()
+        self.get_player_on_ground()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
+        self.create_landing_dust()
         self.player.draw(self.display_surface)
