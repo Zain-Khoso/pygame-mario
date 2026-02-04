@@ -1,7 +1,8 @@
 # Imports
 import pygame
-from tile import Tile
 from settings import *
+from tile import Tile
+from player import Player
 
 
 class Level:
@@ -9,24 +10,29 @@ class Level:
         self.display_surface = surface
         self.world_shift = 0
 
+        self.tiles = pygame.sprite.Group()
+        self.player = pygame.sprite.GroupSingle()
+
         self.setup(level_data)
 
     def setup(self, layout):
-        self.tiles = pygame.sprite.Group()
-
         for row_index, row in enumerate(layout):
             for column_index, column in enumerate(row):
-                if column == " ":
-                    continue
+                x_pos = tile_size * column_index
+                y_pos = tile_size * row_index
+
+                if column == "P":
+                    self.player.add(Player((x_pos, y_pos)))
 
                 elif column == "X":
-                    x_pos = tile_size * column_index
-                    y_pos = tile_size * row_index
-
                     self.tiles.add(Tile((x_pos, y_pos), tile_size))
                 else:
                     continue
 
     def draw(self):
+        # Tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
+
+        # Player
+        self.player.draw(self.display_surface)
