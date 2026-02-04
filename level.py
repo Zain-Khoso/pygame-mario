@@ -15,6 +15,8 @@ class Level:
 
         self.setup(level_data)
 
+        self.current_player_x = 0
+
     def setup(self, layout):
         for row_index, row in enumerate(layout):
             for column_index, column in enumerate(row):
@@ -56,8 +58,23 @@ class Level:
             if tile.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = tile.rect.right
+                    player.on_left = True
+                    self.current_player_x = player.rect.left
+
                 elif player.direction.x > 0:
                     player.rect.right = tile.rect.left
+                    player.on_right = True
+                    self.current_player_x = player.rect.right
+
+        if player.on_left and (
+            player.rect.left < self.current_player_x or player.direction.x >= 0
+        ):
+            player.on_left = False
+
+        if player.on_right and (
+            player.rect.right > self.current_player_x or player.direction.x <= 0
+        ):
+            player.on_right = False
 
     def vertical_movement_collision(self):
         player = self.player.sprite
