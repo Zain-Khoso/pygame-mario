@@ -8,9 +8,14 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         # Loading assets.
-        self.assets_dir = "graphics/character/"
+        self.animations_dir = "graphics/character/"
+        self.dust_particles_dir = "graphics/character/dust_particles/"
+
         self.animations = {"idle": [], "run": [], "jump": [], "fall": []}
+        self.dust_particles = {"jump": [], "land": [], "run": []}
+
         self.import_character_assets()
+        self.import_dust_particles()
 
         # Sprite
         self.frame = 0
@@ -32,9 +37,15 @@ class Player(pygame.sprite.Sprite):
 
     def import_character_assets(self):
         for animation in self.animations.keys():
-            full_path = self.assets_dir + animation
+            full_path = self.animations_dir + animation
 
             self.animations[animation] = import_folder(full_path)
+
+    def import_dust_particles(self):
+        for particles in self.dust_particles.keys():
+            full_path = self.dust_particles_dir + particles
+
+            self.dust_particles[particles] = import_folder(full_path)
 
     def animate(self):
         animation = self.animations[self.status]
