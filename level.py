@@ -68,8 +68,10 @@ class Level:
                 if player.direction.y > 0:
                     player.rect.bottom = tile.rect.top
                     player.direction.y = 0
+
                 elif player.direction.y < 0:
                     player.rect.top = tile.rect.bottom
+                    player.direction.y = 0
 
     def draw(self):
         # Tiles
