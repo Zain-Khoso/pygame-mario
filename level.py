@@ -24,7 +24,7 @@ class Level:
                 y_pos = tile_size * row_index
 
                 if column == "P":
-                    self.player.add(Player((x_pos, y_pos)))
+                    self.player.add(Player((x_pos, y_pos), self.display_surface))
 
                 elif column == "X":
                     self.tiles.add(Tile((x_pos, y_pos), tile_size))

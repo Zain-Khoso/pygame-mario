@@ -4,8 +4,9 @@ from support import import_folder
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, surface):
         super().__init__()
+        self.display_surface = surface
 
         # Loading assets.
         self.animations_dir = "graphics/character/"
@@ -19,7 +20,9 @@ class Player(pygame.sprite.Sprite):
 
         # Sprite
         self.frame = 0
+        self.dust_frame = 0
         self.animation_speed = 0.15
+        self.dust_animation_speed = 0.15
         self.image = self.animations["idle"][self.frame]
         self.rect = self.image.get_rect(topleft=pos)
 
@@ -74,6 +77,25 @@ class Player(pygame.sprite.Sprite):
         else:
             self.rect = self.image.get_rect(center=self.rect.center)
 
+    def animate_particles(self):
+        if self.on_ground and self.status == "run":
+            run_particles = self.dust_particles["run"]
+            self.dust_frame += self.dust_animation_speed
+
+            if self.dust_frame >= len(run_particles):
+                self.dust_frame = 0
+
+            particle = run_particles[int(self.dust_frame)]
+
+            if self.facing_right:
+                pos = self.rect.bottomleft - pygame.math.Vector2(6, 10)
+                self.display_surface.blit(particle, pos)
+            else:
+                pos = self.rect.bottomright - pygame.math.Vector2(6, 10)
+                self.display_surface.blit(
+                    pygame.transform.flip(particle, True, False), pos
+                )
+
     def get_input(self):
         keys = pygame.key.get_pressed()
 
@@ -111,3 +133,4 @@ class Player(pygame.sprite.Sprite):
         self.get_input()
         self.get_status()
         self.animate()
+        self.animate_particles()
