@@ -9,5 +9,5 @@ def import_folder(path):
     for _, __, files in walk(path):
         for filename in files:
             surfaces.append(pygame.image.load(path + "/" + filename).convert_alpha())
-
+            print(path + "/" + filename)
     return surfaces
