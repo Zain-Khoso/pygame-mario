@@ -3,6 +3,7 @@ import pygame
 from settings import *
 from tile import Tile
 from player import Player
+from particles import ParticleEffect
 
 
 class Level:
@@ -17,6 +18,8 @@ class Level:
 
         self.current_player_x = 0
 
+        self.dust_sprite = pygame.sprite.GroupSingle()
+
     def setup(self, layout):
         for row_index, row in enumerate(layout):
             for column_index, column in enumerate(row):
@@ -24,7 +27,13 @@ class Level:
                 y_pos = tile_size * row_index
 
                 if column == "P":
-                    self.player.add(Player((x_pos, y_pos), self.display_surface))
+                    self.player.add(
+                        Player(
+                            (x_pos, y_pos),
+                            self.display_surface,
+                            self.create_jump_particles,
+                        )
+                    )
 
                 elif column == "X":
                     self.tiles.add(Tile((x_pos, y_pos), tile_size))
@@ -98,7 +107,19 @@ class Level:
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False
 
+    def create_jump_particles(self, pos):
+        if self.player.sprite.facing_right:
+            pos -= pygame.math.Vector2(10, 5)
+        else:
+            pos += pygame.math.Vector2(10, -5)
+
+        self.dust_sprite.add(ParticleEffect(pos, "jump"))
+
     def draw(self):
+        # Particles
+        self.dust_sprite.update(self.world_shift)
+        self.dust_sprite.draw(self.display_surface)
+
         # Tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
