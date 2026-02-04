@@ -10,13 +10,12 @@ class Player(pygame.sprite.Sprite):
 
         # Loading assets.
         self.animations_dir = "graphics/character/"
-        self.dust_particles_dir = "graphics/character/dust_particles/"
+        self.dust_particles_dir = "graphics/character/dust_particles/run/"
 
         self.animations = {"idle": [], "run": [], "jump": [], "fall": []}
-        self.dust_particles = {"jump": [], "land": [], "run": []}
+        self.dust_particles = import_folder(self.dust_particles_dir)
 
         self.import_character_assets()
-        self.import_dust_particles()
 
         # Sprite
         self.frame = 0
@@ -43,12 +42,6 @@ class Player(pygame.sprite.Sprite):
             full_path = self.animations_dir + animation
 
             self.animations[animation] = import_folder(full_path)
-
-    def import_dust_particles(self):
-        for particles in self.dust_particles.keys():
-            full_path = self.dust_particles_dir + particles
-
-            self.dust_particles[particles] = import_folder(full_path)
 
     def animate(self):
         animation = self.animations[self.status]
@@ -78,23 +71,22 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(center=self.rect.center)
 
     def animate_particles(self):
-        if self.on_ground and self.status == "run":
-            run_particles = self.dust_particles["run"]
-            self.dust_frame += self.dust_animation_speed
+        if not self.on_ground or self.status != "run":
+            return
 
-            if self.dust_frame >= len(run_particles):
-                self.dust_frame = 0
+        self.dust_frame += self.dust_animation_speed
 
-            particle = run_particles[int(self.dust_frame)]
+        if self.dust_frame >= len(self.dust_particles):
+            self.dust_frame = 0
 
-            if self.facing_right:
-                pos = self.rect.bottomleft - pygame.math.Vector2(6, 10)
-                self.display_surface.blit(particle, pos)
-            else:
-                pos = self.rect.bottomright - pygame.math.Vector2(6, 10)
-                self.display_surface.blit(
-                    pygame.transform.flip(particle, True, False), pos
-                )
+        particle = self.dust_particles[int(self.dust_frame)]
+
+        if self.facing_right:
+            pos = self.rect.bottomleft - pygame.math.Vector2(6, 10)
+            self.display_surface.blit(particle, pos)
+        else:
+            pos = self.rect.bottomright - pygame.math.Vector2(6, 10)
+            self.display_surface.blit(pygame.transform.flip(particle, True, False), pos)
 
     def get_input(self):
         keys = pygame.key.get_pressed()
