@@ -29,6 +29,24 @@ class Level:
                 else:
                     continue
 
+    def scroll_x(self):
+        player = self.player.sprite
+        player_x = player.rect.centerx
+        direction_x = player.direction.x
+
+        left_border = (screen_width // 100) * 20
+        right_border = (screen_width // 100) * 80
+
+        if player_x < left_border and direction_x < 0:
+            self.world_shift = 8
+            player.speed = 0
+        elif player_x > right_border and direction_x > 0:
+            self.world_shift = -8
+            player.speed = 0
+        else:
+            self.world_shift = 0
+            player.speed = 8
+
     def draw(self):
         # Tiles
         self.tiles.update(self.world_shift)
@@ -37,3 +55,6 @@ class Level:
         # Player
         self.player.update()
         self.player.draw(self.display_surface)
+
+        # World
+        self.scroll_x()
