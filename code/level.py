@@ -5,7 +5,7 @@ from support import import_csv_data, import_cut_graphics
 
 from tiles import Tile, StaticTile, Crate, Coin, Palm
 from enemy import Enemy
-from decoration import Sky, Water
+from decoration import Sky, Water, Clouds
 
 from player import Player
 from particles import ParticleEffect
@@ -15,7 +15,7 @@ class Level:
     def __init__(self, data_path, surface):
         # World
         self.display_surface = surface
-        self.world_shift = 0
+        self.world_shift = -2
         self.data_path = data_path
         self.level_width = 0
 
@@ -36,7 +36,8 @@ class Level:
 
         # Decorations
         self.sky = Sky(8)
-        self.water = Water(screen_height - 40, self.level_width)
+        self.water = Water(screen_height - 48, self.level_width)
+        self.clouds = Clouds(400, self.level_width, 20)
 
         self.current_player_x = 0
         self.player_on_ground = False
@@ -210,9 +211,9 @@ class Level:
         self.dust_sprite.add(particles)
 
     def draw(self):
-
         # Decorations
         self.sky.draw(self.display_surface)
+        self.clouds.draw(self.display_surface, self.world_shift)
         self.water.draw(self.display_surface, self.world_shift)
 
         # Bg Palms
