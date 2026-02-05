@@ -1,9 +1,10 @@
 # Imports
 import pygame
 from settings import tile_size
-from support import import_csv_data
+from support import import_csv_data, import_cut_graphics
 
-from tile import Tile
+from tiles import StaticTile
+
 from player import Player
 from particles import ParticleEffect
 
@@ -27,10 +28,11 @@ class Level:
         self.dust_sprite = pygame.sprite.GroupSingle()
 
     def create_tile_group(self, type):
-        terrain_data = import_csv_data(self.data_path[type])
         group = pygame.sprite.Group()
+        data = import_csv_data(self.data_path[type])
+        graphics = import_cut_graphics(type)
 
-        for row_index, row in enumerate(terrain_data):
+        for row_index, row in enumerate(data):
             for col_index, col in enumerate(row):
                 if col == "-1":
                     continue
@@ -39,7 +41,9 @@ class Level:
                 y_pos = tile_size * row_index
 
                 if type == "terrain":
-                    group.add(Tile(tile_size, x_pos, y_pos))
+                    surf = graphics[int(col)]
+                    tile = StaticTile(tile_size, x_pos, y_pos, surf)
+                    group.add(tile)
 
         return group
 
