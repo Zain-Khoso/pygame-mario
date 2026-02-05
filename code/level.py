@@ -3,7 +3,7 @@ import pygame
 from settings import tile_size
 from support import import_csv_data, import_cut_graphics
 
-from tiles import StaticTile
+from tiles import StaticTile, Crate
 
 from player import Player
 from particles import ParticleEffect
@@ -20,6 +20,7 @@ class Level:
         self.terrain = self.create_tile_group("terrain")
         self.grass = self.create_tile_group("grass")
         self.coins = self.create_tile_group("coins")
+        self.crates = self.create_tile_group("crates")
 
         # Player
         self.player = pygame.sprite.GroupSingle()
@@ -32,7 +33,7 @@ class Level:
     def create_tile_group(self, type):
         group = pygame.sprite.Group()
         data = import_csv_data(self.data_path[type])
-        graphics = import_cut_graphics(type)
+        cut_graphics = import_cut_graphics(type)
 
         for row_index, row in enumerate(data):
             for col_index, col in enumerate(row):
@@ -43,9 +44,15 @@ class Level:
                 y_pos = tile_size * row_index
 
                 if type == "terrain" or type == "grass" or type == "coins":
-                    surf = graphics[int(col)]
+                    surf = cut_graphics[int(col)]
                     tile = StaticTile(tile_size, x_pos, y_pos, surf)
-                    group.add(tile)
+
+                elif type == "crates":
+                    tile = Crate(tile_size, x_pos, y_pos)
+                else:
+                    continue
+
+                group.add(tile)
 
         return group
 
@@ -159,6 +166,10 @@ class Level:
         # Coins
         self.coins.update(self.world_shift)
         self.coins.draw(self.display_surface)
+
+        # Crates
+        self.crates.update(self.world_shift)
+        self.crates.draw(self.display_surface)
 
         # self.scroll_x()
 

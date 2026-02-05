@@ -17,3 +17,15 @@ class StaticTile(Tile):
     def __init__(self, size, x, y, surface):
         super().__init__(size, x, y)
         self.image = surface
+
+
+class Crate(StaticTile):
+    def __init__(self, size, x, y):
+
+        image = pygame.image.load("./graphics/terrain/crate.png").convert_alpha()
+        super().__init__(size, x, y, image)
+
+        # Position.
+        offet_y = y + size
+        offet_x = x + (size // 2)
+        self.rect = self.image.get_rect(midbottom=(offet_x, offet_y))
