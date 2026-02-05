@@ -11,6 +11,7 @@ animation_frames = {
     "palms": {
         "small": "./graphics/terrain/palm_small",
         "large": "./graphics/terrain/palm_large",
+        "bg": "./graphics/terrain/palm_bg",
     },
 }
 

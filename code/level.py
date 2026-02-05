@@ -22,6 +22,7 @@ class Level:
         self.coins = self.create_tile_group("coins")
         self.crates = self.create_tile_group("crates")
         self.fg_palms = self.create_tile_group("fg palms")
+        self.bg_palms = self.create_tile_group("bg palms")
 
         # Player
         self.player = pygame.sprite.GroupSingle()
@@ -58,6 +59,9 @@ class Level:
                 elif type == "fg palms":
                     palm_type = "small" if col == "0" else "large"
                     tile = Palm(tile_size, x_pos, y_pos, palm_type)
+
+                elif type == "bg palms":
+                    tile = Palm(tile_size, x_pos, y_pos, "bg")
 
                 else:
                     continue
@@ -164,6 +168,10 @@ class Level:
         # # Particles
         # self.dust_sprite.update(self.world_shift)
         # self.dust_sprite.draw(self.display_surface)
+
+        # Bg Palms
+        self.bg_palms.update(self.world_shift)
+        self.bg_palms.draw(self.display_surface)
 
         # Terrain
         self.terrain.update(self.world_shift)
