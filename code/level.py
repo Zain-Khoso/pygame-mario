@@ -29,6 +29,9 @@ class Level:
 
         # Player
         self.player = pygame.sprite.GroupSingle()
+        self.goal = pygame.sprite.GroupSingle()
+        self.create_player()
+
         self.current_player_x = 0
         self.player_on_ground = False
 
@@ -83,6 +86,27 @@ class Level:
         for enemy in self.enemies.sprites():
             if pygame.sprite.spritecollide(enemy, self.constraints, False):
                 enemy.reverse()
+
+    def create_player(self):
+        data = import_csv_data(self.data_path["player"])
+
+        for row_index, row in enumerate(data):
+            for col_index, col in enumerate(row):
+                x_pos = tile_size * col_index
+                y_pos = tile_size * row_index
+
+                if col == "0":
+                    print("player", x_pos, y_pos)
+                    continue
+
+                if col == "1":
+                    hat_surface = pygame.image.load(
+                        "./graphics/character/hat.png"
+                    ).convert_alpha()
+
+                    tile = StaticTile(tile_size, x_pos, y_pos, hat_surface)
+
+                    self.goal.add(tile)
 
     def scroll_x(self):
         player = self.player.sprite
@@ -179,9 +203,6 @@ class Level:
         self.dust_sprite.add(particles)
 
     def draw(self):
-        # # Particles
-        # self.dust_sprite.update(self.world_shift)
-        # self.dust_sprite.draw(self.display_surface)
 
         # Bg Palms
         self.bg_palms.update(self.world_shift)
@@ -215,6 +236,10 @@ class Level:
         # Fg Palms
         self.fg_palms.update(self.world_shift)
         self.fg_palms.draw(self.display_surface)
+
+        # Goal
+        self.goal.update(self.world_shift)
+        self.goal.draw(self.display_surface)
 
         # self.scroll_x()
 
