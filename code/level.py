@@ -177,6 +177,10 @@ class Level:
         self.terrain.update(self.world_shift)
         self.terrain.draw(self.display_surface)
 
+        # Crates
+        self.crates.update(self.world_shift)
+        self.crates.draw(self.display_surface)
+
         # Grass
         self.grass.update(self.world_shift)
         self.grass.draw(self.display_surface)
@@ -184,10 +188,6 @@ class Level:
         # Coins
         self.coins.update(self.world_shift)
         self.coins.draw(self.display_surface)
-
-        # Crates
-        self.crates.update(self.world_shift)
-        self.crates.draw(self.display_surface)
 
         # Fg Palms
         self.fg_palms.update(self.world_shift)
