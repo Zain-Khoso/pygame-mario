@@ -5,6 +5,7 @@ from support import import_csv_data, import_cut_graphics
 
 from tiles import Tile, StaticTile, Crate, Coin, Palm
 from enemy import Enemy
+from decoration import Sky
 
 from player import Player
 from particles import ParticleEffect
@@ -31,6 +32,9 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
         self.create_player()
+
+        # Decorations
+        self.sky = Sky(8)
 
         self.current_player_x = 0
         self.player_on_ground = False
@@ -203,6 +207,9 @@ class Level:
         self.dust_sprite.add(particles)
 
     def draw(self):
+
+        # Bg Palms
+        self.sky.draw(self.display_surface)
 
         # Bg Palms
         self.bg_palms.update(self.world_shift)
