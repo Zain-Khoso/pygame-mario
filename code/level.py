@@ -1,6 +1,6 @@
 # Imports
 import pygame
-from settings import tile_size, screen_height
+from settings import tile_size, screen_width, screen_height
 from support import import_csv_data, import_cut_graphics
 
 from tiles import Tile, StaticTile, Crate, Coin, Palm
@@ -15,7 +15,7 @@ class Level:
     def __init__(self, data_path, surface):
         # World
         self.display_surface = surface
-        self.world_shift = -2
+        self.world_shift = 0
         self.data_path = data_path
         self.level_width = 0
 
@@ -33,17 +33,16 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
         self.create_player()
-
-        # Decorations
-        self.sky = Sky(8)
-        self.water = Water(screen_height - 48, self.level_width)
-        self.clouds = Clouds(400, self.level_width, 20)
-
         self.current_player_x = 0
         self.player_on_ground = False
 
         # Particles
         self.dust_sprite = pygame.sprite.GroupSingle()
+
+        # Decorations
+        self.sky = Sky(8)
+        self.water = Water(screen_height - 48, self.level_width)
+        self.clouds = Clouds(400, self.level_width, 20)
 
     def create_tile_group(self, type):
         group = pygame.sprite.Group()
@@ -104,8 +103,10 @@ class Level:
                 y_pos = tile_size * row_index
 
                 if col == "0":
-                    print("player", x_pos, y_pos)
-                    continue
+                    player = Player(
+                        (x_pos, y_pos), self.display_surface, self.create_jump_particles
+                    )
+                    self.player.add(player)
 
                 if col == "1":
                     hat_surface = pygame.image.load(
@@ -121,8 +122,8 @@ class Level:
         player_x = player.rect.centerx
         direction_x = player.direction.x
 
-        left_border = (screen_width // 100) * 20
-        right_border = (screen_width // 100) * 80
+        left_border = screen_width * 0.4
+        right_border = screen_width * 0.6
 
         if player_x < left_border and direction_x < 0:
             self.world_shift = 8
@@ -136,10 +137,11 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
-
         player.rect.x += int(player.direction.x) * player.speed
 
-        for tile in self.tiles.sprites():
+        tiles = self.terrain.sprites() + self.crates.sprites() + self.fg_palms.sprites()
+
+        for tile in tiles:
             if tile.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = tile.rect.right
@@ -165,7 +167,9 @@ class Level:
         player = self.player.sprite
         player.apply_gravity()
 
-        for tile in self.tiles.sprites():
+        tiles = self.terrain.sprites() + self.crates.sprites() + self.fg_palms.sprites()
+
+        for tile in tiles:
             if tile.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = tile.rect.top
@@ -211,10 +215,16 @@ class Level:
         self.dust_sprite.add(particles)
 
     def draw(self):
+        self.scroll_x()
+
         # Decorations
         self.sky.draw(self.display_surface)
         self.clouds.draw(self.display_surface, self.world_shift)
         self.water.draw(self.display_surface, self.world_shift)
+
+        # Particles
+        self.dust_sprite.update(self.world_shift)
+        self.dust_sprite.draw(self.display_surface)
 
         # Bg Palms
         self.bg_palms.update(self.world_shift)
@@ -253,13 +263,10 @@ class Level:
         self.goal.update(self.world_shift)
         self.goal.draw(self.display_surface)
 
-        # self.scroll_x()
-
-        # # Player
-        # self.player.update()
-        # self.get_player_on_ground()
-        # self.horizontal_movement_collision()
-        # self.vertical_movement_collision()
-        # self.create_landing_dust()
-        # self.player.draw(self.display_surface)
-        pass
+        # Player
+        self.player.update()
+        self.get_player_on_ground()
+        self.horizontal_movement_collision()
+        self.vertical_movement_collision()
+        self.create_landing_dust()
+        self.player.draw(self.display_surface)
