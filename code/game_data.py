@@ -1,7 +1,17 @@
 cut_graphics = {
     "terrain": "./graphics/terrain/terrain_tiles.png",
     "grass": "./graphics/decoration/grass/grass.png",
-    "coins": "./graphics/coins/coin_tiles.png",
+}
+
+animation_frames = {
+    "coins": {
+        "silver": "./graphics/coins/silver",
+        "gold": "./graphics/coins/gold",
+    },
+    "palms": {
+        "small": "./graphics/terrain/palm_small",
+        "large": "./graphics/terrain/palm_large",
+    },
 }
 
 level_0 = {

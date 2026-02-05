@@ -3,7 +3,7 @@ import pygame
 from settings import tile_size
 from support import import_csv_data, import_cut_graphics
 
-from tiles import StaticTile, Crate
+from tiles import StaticTile, Crate, Coin, Palm
 
 from player import Player
 from particles import ParticleEffect
@@ -21,6 +21,7 @@ class Level:
         self.grass = self.create_tile_group("grass")
         self.coins = self.create_tile_group("coins")
         self.crates = self.create_tile_group("crates")
+        self.fg_palms = self.create_tile_group("fg palms")
 
         # Player
         self.player = pygame.sprite.GroupSingle()
@@ -43,12 +44,21 @@ class Level:
                 x_pos = tile_size * col_index
                 y_pos = tile_size * row_index
 
-                if type == "terrain" or type == "grass" or type == "coins":
+                if type == "terrain" or type == "grass":
                     surf = cut_graphics[int(col)]
                     tile = StaticTile(tile_size, x_pos, y_pos, surf)
 
                 elif type == "crates":
                     tile = Crate(tile_size, x_pos, y_pos)
+
+                elif type == "coins":
+                    coin_type = "silver" if col == "1" else "gold"
+                    tile = Coin(tile_size, x_pos, y_pos, coin_type)
+
+                elif type == "fg palms":
+                    palm_type = "small" if col == "0" else "large"
+                    tile = Palm(tile_size, x_pos, y_pos, palm_type)
+
                 else:
                     continue
 
@@ -170,6 +180,10 @@ class Level:
         # Crates
         self.crates.update(self.world_shift)
         self.crates.draw(self.display_surface)
+
+        # Fg Palms
+        self.fg_palms.update(self.world_shift)
+        self.fg_palms.draw(self.display_surface)
 
         # self.scroll_x()
 
