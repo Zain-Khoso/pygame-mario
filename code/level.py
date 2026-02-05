@@ -1,11 +1,11 @@
 # Imports
 import pygame
-from settings import tile_size
+from settings import tile_size, screen_height
 from support import import_csv_data, import_cut_graphics
 
 from tiles import Tile, StaticTile, Crate, Coin, Palm
 from enemy import Enemy
-from decoration import Sky
+from decoration import Sky, Water
 
 from player import Player
 from particles import ParticleEffect
@@ -17,6 +17,7 @@ class Level:
         self.display_surface = surface
         self.world_shift = 0
         self.data_path = data_path
+        self.level_width = 0
 
         # Level
         self.terrain = self.create_tile_group("terrain")
@@ -35,6 +36,7 @@ class Level:
 
         # Decorations
         self.sky = Sky(8)
+        self.water = Water(screen_height - 40, self.level_width)
 
         self.current_player_x = 0
         self.player_on_ground = False
@@ -84,6 +86,7 @@ class Level:
 
                 group.add(tile)
 
+        self.level_width = len(data[0]) * tile_size
         return group
 
     def enemy_collisions(self):
@@ -208,8 +211,9 @@ class Level:
 
     def draw(self):
 
-        # Bg Palms
+        # Decorations
         self.sky.draw(self.display_surface)
+        self.water.draw(self.display_surface, self.world_shift)
 
         # Bg Palms
         self.bg_palms.update(self.world_shift)
