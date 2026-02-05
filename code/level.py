@@ -3,7 +3,8 @@ import pygame
 from settings import tile_size
 from support import import_csv_data, import_cut_graphics
 
-from tiles import StaticTile, Crate, Coin, Palm
+from tiles import Tile, StaticTile, Crate, Coin, Palm
+from enemy import Enemy
 
 from player import Player
 from particles import ParticleEffect
@@ -23,6 +24,8 @@ class Level:
         self.crates = self.create_tile_group("crates")
         self.fg_palms = self.create_tile_group("fg palms")
         self.bg_palms = self.create_tile_group("bg palms")
+        self.enemies = self.create_tile_group("enemies")
+        self.constraints = self.create_tile_group("constraints")
 
         # Player
         self.player = pygame.sprite.GroupSingle()
@@ -63,12 +66,23 @@ class Level:
                 elif type == "bg palms":
                     tile = Palm(tile_size, x_pos, y_pos, "bg")
 
+                elif type == "enemies":
+                    tile = Enemy(tile_size, x_pos, y_pos)
+
+                elif type == "constraints":
+                    tile = Tile(tile_size, x_pos, y_pos)
+
                 else:
                     continue
 
                 group.add(tile)
 
         return group
+
+    def enemy_collisions(self):
+        for enemy in self.enemies.sprites():
+            if pygame.sprite.spritecollide(enemy, self.constraints, False):
+                enemy.reverse()
 
     def scroll_x(self):
         player = self.player.sprite
@@ -176,6 +190,15 @@ class Level:
         # Terrain
         self.terrain.update(self.world_shift)
         self.terrain.draw(self.display_surface)
+
+        # Enemies
+        self.enemies.update(self.world_shift)
+        self.enemies.draw(self.display_surface)
+        self.enemy_collisions()
+
+        # Constraints
+        self.constraints.update(self.world_shift)
+        self.constraints.draw(self.display_surface)
 
         # Crates
         self.crates.update(self.world_shift)

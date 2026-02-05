@@ -13,6 +13,7 @@ animation_frames = {
         "large": "./graphics/terrain/palm_large",
         "bg": "./graphics/terrain/palm_bg",
     },
+    "enemies": "./graphics/enemy/run",
 }
 
 level_0 = {
