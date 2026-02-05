@@ -1,6 +1,7 @@
 cut_graphics = {
     "terrain": "./graphics/terrain/terrain_tiles.png",
     "grass": "./graphics/decoration/grass/grass.png",
+    "coins": "./graphics/coins/coin_tiles.png",
 }
 
 level_0 = {

@@ -19,6 +19,7 @@ class Level:
         # Level
         self.terrain = self.create_tile_group("terrain")
         self.grass = self.create_tile_group("grass")
+        self.coins = self.create_tile_group("coins")
 
         # Player
         self.player = pygame.sprite.GroupSingle()
@@ -41,7 +42,7 @@ class Level:
                 x_pos = tile_size * col_index
                 y_pos = tile_size * row_index
 
-                if type == "terrain" or type == "grass":
+                if type == "terrain" or type == "grass" or type == "coins":
                     surf = graphics[int(col)]
                     tile = StaticTile(tile_size, x_pos, y_pos, surf)
                     group.add(tile)
@@ -154,6 +155,10 @@ class Level:
         # Grass
         self.grass.update(self.world_shift)
         self.grass.draw(self.display_surface)
+
+        # Coins
+        self.coins.update(self.world_shift)
+        self.coins.draw(self.display_surface)
 
         # self.scroll_x()
 
