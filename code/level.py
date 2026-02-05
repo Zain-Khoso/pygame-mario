@@ -1,45 +1,47 @@
 # Imports
 import pygame
-from settings import *
+from settings import tile_size
+from support import import_csv_data
+
 from tile import Tile
 from player import Player
 from particles import ParticleEffect
 
 
 class Level:
-    def __init__(self, level_data, surface):
+    def __init__(self, data_path, surface):
+        # World
         self.display_surface = surface
         self.world_shift = 0
+        self.data_path = data_path
 
-        self.tiles = pygame.sprite.Group()
+        # Level
+        self.terrain = self.create_tile_group("terrain")
+
+        # Player
         self.player = pygame.sprite.GroupSingle()
-
-        self.setup(level_data)
-
         self.current_player_x = 0
         self.player_on_ground = False
 
+        # Particles
         self.dust_sprite = pygame.sprite.GroupSingle()
 
-    def setup(self, layout):
-        for row_index, row in enumerate(layout):
-            for column_index, column in enumerate(row):
-                x_pos = tile_size * column_index
+    def create_tile_group(self, type):
+        terrain_data = import_csv_data(self.data_path[type])
+        group = pygame.sprite.Group()
+
+        for row_index, row in enumerate(terrain_data):
+            for col_index, col in enumerate(row):
+                if col == "-1":
+                    continue
+
+                x_pos = tile_size * col_index
                 y_pos = tile_size * row_index
 
-                if column == "P":
-                    self.player.add(
-                        Player(
-                            (x_pos, y_pos),
-                            self.display_surface,
-                            self.create_jump_particles,
-                        )
-                    )
+                if type == "terrain":
+                    group.add(Tile(tile_size, x_pos, y_pos))
 
-                elif column == "X":
-                    self.tiles.add(Tile((x_pos, y_pos), tile_size))
-                else:
-                    continue
+        return group
 
     def scroll_x(self):
         player = self.player.sprite
@@ -136,19 +138,20 @@ class Level:
         self.dust_sprite.add(particles)
 
     def draw(self):
-        # Particles
-        self.dust_sprite.update(self.world_shift)
-        self.dust_sprite.draw(self.display_surface)
+        # # Particles
+        # self.dust_sprite.update(self.world_shift)
+        # self.dust_sprite.draw(self.display_surface)
 
-        # Tiles
-        self.tiles.update(self.world_shift)
-        self.tiles.draw(self.display_surface)
-        self.scroll_x()
+        # Terrain
+        self.terrain.update(self.world_shift)
+        self.terrain.draw(self.display_surface)
+        # self.scroll_x()
 
-        # Player
-        self.player.update()
-        self.get_player_on_ground()
-        self.horizontal_movement_collision()
-        self.vertical_movement_collision()
-        self.create_landing_dust()
-        self.player.draw(self.display_surface)
+        # # Player
+        # self.player.update()
+        # self.get_player_on_ground()
+        # self.horizontal_movement_collision()
+        # self.vertical_movement_collision()
+        # self.create_landing_dust()
+        # self.player.draw(self.display_surface)
+        pass
