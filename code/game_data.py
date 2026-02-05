@@ -1,3 +1,7 @@
+cut_graphics = {
+    "terrain": "./graphics/terrain/terrain_tiles.png",
+}
+
 level_0 = {
     "bg palms": "./levels/0/level_0_bg_palms.csv",
     "coins": "./levels/0/level_0_coins.csv",
