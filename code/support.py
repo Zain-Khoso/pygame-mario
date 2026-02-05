@@ -35,7 +35,12 @@ def import_csv_data(path):
 def import_cut_graphics(type):
     cut_tiles = []
 
-    surf = pygame.image.load(cut_graphics[type]).convert_alpha()
+    try:
+        graphic = cut_graphics[type]
+    except KeyError:
+        return []
+
+    surf = pygame.image.load(graphic).convert_alpha()
     tile_num_x = int(surf.get_width() // tile_size)
     tile_num_y = int(surf.get_height() // tile_size)
 
