@@ -44,6 +44,7 @@ class Level:
 
         # Particles
         self.dust_sprite = pygame.sprite.GroupSingle()
+        self.explosions = pygame.sprite.Group()
 
         # Decorations
         self.sky = Sky(8)
@@ -100,6 +101,23 @@ class Level:
         for enemy in self.enemies.sprites():
             if pygame.sprite.spritecollide(enemy, self.constraints, False):
                 enemy.reverse()
+
+        player_collisions = pygame.sprite.spritecollide(
+            self.player.sprite, self.enemies, False
+        )
+
+        for enemy in player_collisions:
+            enemy_center = enemy.rect.centery
+            enemy_top = enemy.rect.top
+            player_bottom = self.player.sprite.rect.bottom
+
+            if (
+                enemy_top < player_bottom < enemy_center
+                and self.player.sprite.direction.y >= 0
+            ):
+                self.player.sprite.jump()
+                self.explosions.add(ParticleEffect(enemy.rect.center, "explosion"))
+                enemy.kill()
 
     def create_player(self):
         data = import_csv_data(self.level_data["player"])
@@ -261,6 +279,8 @@ class Level:
         self.enemies.update(self.level_shift)
         self.enemies.draw(self.display_surface)
         self.enemy_collisions()
+        self.explosions.update(self.level_shift)
+        self.explosions.draw(self.display_surface)
 
         # Constraints
         self.constraints.update(self.level_shift)
