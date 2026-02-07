@@ -54,6 +54,12 @@ class Level:
         self.water = Water(screen_height - 48, self.level_width)
         self.clouds = Clouds(400, self.level_width, 20)
 
+        # Audio
+        self.coin_sound = pygame.mixer.Sound("./audio/effects/coin.wav")
+        self.coin_sound.set_volume(0.4)
+        self.stomp_sound = pygame.mixer.Sound("./audio/effects/stomp.wav")
+        self.stomp_sound.set_volume(0.4)
+
     def create_tile_group(self, type):
         group = pygame.sprite.Group()
         data = import_csv_data(self.level_data[type])
@@ -99,30 +105,6 @@ class Level:
 
         self.level_width = len(data[0]) * tile_size
         return group
-
-    def enemy_collisions(self):
-        for enemy in self.enemies.sprites():
-            if pygame.sprite.spritecollide(enemy, self.constraints, False):
-                enemy.reverse()
-
-        player_collisions = pygame.sprite.spritecollide(
-            self.player.sprite, self.enemies, False
-        )
-
-        for enemy in player_collisions:
-            enemy_center = enemy.rect.centery
-            enemy_top = enemy.rect.top
-            player_bottom = self.player.sprite.rect.bottom
-
-            if (
-                enemy_top < player_bottom < enemy_center
-                and self.player.sprite.direction.y >= 0
-            ):
-                self.player.sprite.jump()
-                self.explosions.add(ParticleEffect(enemy.rect.center, "explosion"))
-                enemy.kill()
-            else:
-                self.player.sprite.get_damage()
 
     def create_player(self):
         data = import_csv_data(self.level_data["player"])
@@ -244,10 +226,36 @@ class Level:
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, True):
             self.create_overworld(self.current_level, self.level_unlock)
 
+    def enemy_collisions(self):
+        for enemy in self.enemies.sprites():
+            if pygame.sprite.spritecollide(enemy, self.constraints, False):
+                enemy.reverse()
+
+        player_collisions = pygame.sprite.spritecollide(
+            self.player.sprite, self.enemies, False
+        )
+
+        for enemy in player_collisions:
+            enemy_center = enemy.rect.centery
+            enemy_top = enemy.rect.top
+            player_bottom = self.player.sprite.rect.bottom
+
+            if (
+                enemy_top < player_bottom < enemy_center
+                and self.player.sprite.direction.y >= 0
+            ):
+                self.player.sprite.jump()
+                self.explosions.add(ParticleEffect(enemy.rect.center, "explosion"))
+                self.stomp_sound.play()
+                enemy.kill()
+            else:
+                self.player.sprite.get_damage()
+
     def coin_collisions(self):
         collisions = pygame.sprite.spritecollide(self.player.sprite, self.coins, True)
 
         for coin in collisions:
+            self.coin_sound.play()
             self.add_coins(coin.value)
 
     def draw(self):
