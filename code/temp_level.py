@@ -24,7 +24,7 @@ class Level:
 
         if keys[pygame.K_RETURN]:
             self.create_overworld(self.current_level, self.new_max_level)
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_ESCAPE]:
             self.create_overworld(self.current_level, 0)
 
     def run(self):
