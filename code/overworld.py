@@ -2,20 +2,38 @@
 import pygame
 from game_data import levels
 
+from support import import_folder
+
 
 class Node(pygame.sprite.Sprite):
-    def __init__(self, pos, is_locked, icon_speed):
+    def __init__(self, pos, locked, icon_speed, path):
         super().__init__()
 
-        self.image = pygame.Surface((100, 80))
-        self.image.fill("gray" if is_locked else "red")
+        # Animation
+        self.frame = 0
+        self.frame_speed = 0.15
+        self.frames = import_folder(path)
+
+        self.image = self.frames[self.frame]
         self.rect = self.image.get_rect(center=pos)
+        self.locked = locked
 
         detection_zone_x_pos = self.rect.centerx - (icon_speed / 2)
         detection_zone_y_pos = self.rect.centery - (icon_speed / 2)
         self.detection_zone = pygame.Rect(
             detection_zone_x_pos, detection_zone_y_pos, icon_speed, icon_speed
         )
+
+    def animate(self):
+        self.frame += self.frame_speed
+
+        if self.frame >= len(self.frames):
+            self.frame = 0
+
+        self.image = self.frames[int(self.frame)]
+
+    def update(self):
+        self.animate()
 
 
 class Icon(pygame.sprite.Sprite):
@@ -51,8 +69,11 @@ class Overworld:
         group = pygame.sprite.Group()
 
         for index, level_data in enumerate(levels.values()):
-            node = Node(level_data["node_pos"], index > self.max_level, self.icon_speed)
-            group.add(node)
+            pos = level_data["node_pos"]
+            graphics = level_data["node_graphics"]
+            locked = index > self.max_level
+
+            group.add(Node(pos, locked, self.icon_speed, graphics))
 
         return group
 
@@ -112,6 +133,7 @@ class Overworld:
     def run(self):
         self.handle_input()
         self.draw_paths()
+        self.nodes.update()
         self.nodes.draw(self.display_surface)
         self.icon.update()
         self.icon.draw(self.display_surface)
