@@ -42,7 +42,7 @@ while True:
             pygame.quit()
             sys.exit()
 
-    screen.fill("black")
+    screen.fill("gray")
     game.run()
 
     pygame.display.update()

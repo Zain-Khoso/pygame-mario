@@ -33,7 +33,12 @@ class Node(pygame.sprite.Sprite):
         self.image = self.frames[int(self.frame)]
 
     def update(self):
-        self.animate()
+        if self.locked:
+            tint_surf = self.image.copy()
+            tint_surf.fill("black", None, pygame.BLEND_RGBA_MULT)
+            self.image.blit(tint_surf, (0, 0))
+        else:
+            self.animate()
 
 
 class Icon(pygame.sprite.Sprite):
