@@ -83,7 +83,7 @@ class Overworld:
             for index, level_data in enumerate(levels.values())
             if index <= self.max_level
         ]
-        pygame.draw.lines(self.display_surface, "red", False, points, 6)
+        pygame.draw.lines(self.display_surface, "#a04f45", False, points, 6)
 
     def create_icon(self):
         group = pygame.sprite.GroupSingle()
