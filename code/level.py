@@ -13,12 +13,15 @@ from particles import ParticleEffect
 
 
 class Level:
-    def __init__(self, current_level, surface, create_overworld, add_coins):
+    def __init__(
+        self, current_level, surface, create_overworld, add_coins, change_health
+    ):
         # Setup
         self.display_surface = surface
         self.create_overworld = create_overworld
         self.current_level = current_level
         self.add_coins = add_coins
+        self.change_health = change_health
 
         self.level_data = levels[self.current_level]
         self.level_unlock = self.level_data["unlock"]
@@ -118,6 +121,8 @@ class Level:
                 self.player.sprite.jump()
                 self.explosions.add(ParticleEffect(enemy.rect.center, "explosion"))
                 enemy.kill()
+            else:
+                self.player.sprite.get_damage()
 
     def create_player(self):
         data = import_csv_data(self.level_data["player"])
@@ -129,7 +134,10 @@ class Level:
 
                 if col == "0":
                     player = Player(
-                        (x_pos, y_pos), self.display_surface, self.create_jump_particles
+                        (x_pos, y_pos),
+                        self.display_surface,
+                        self.create_jump_particles,
+                        self.change_health,
                     )
                     self.player.add(player)
 

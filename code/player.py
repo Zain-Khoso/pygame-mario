@@ -1,12 +1,14 @@
 # Imports
 import pygame
+from math import sin
 from support import import_folder
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, surface, create_jump_particles):
+    def __init__(self, pos, surface, create_jump_particles, change_health):
         super().__init__()
         self.display_surface = surface
+        self.change_health = change_health
 
         # Loading assets.
         self.animations_dir = "graphics/character/"
@@ -38,6 +40,10 @@ class Player(pygame.sprite.Sprite):
         self.on_right = False
         self.on_left = False
 
+        self.invincible = False
+        self.invincibility_duration = 3000
+        self.invincibility_time = 0
+
     def import_character_assets(self):
         for animation in self.animations.keys():
             full_path = self.animations_dir + animation
@@ -52,9 +58,15 @@ class Player(pygame.sprite.Sprite):
             self.frame = 0
 
         image = animation[int(self.frame)]
-        self.image = (
-            image if self.facing_right else pygame.transform.flip(image, True, False)
-        )
+        if self.facing_right:
+            self.image = image
+        else:
+            pygame.transform.flip(image, True, False)
+
+        if self.invincible:
+            self.image.set_alpha(self.wave_value())
+        else:
+            self.image.set_alpha(255)
 
         if self.on_ground and self.on_right:
             self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
@@ -123,8 +135,31 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
         self.direction.y = self.jump_power
 
+    def get_damage(self):
+        if not self.invincible:
+            self.change_health(-15)
+            self.invincible = True
+            self.invincibility_time = pygame.time.get_ticks()
+
+    def invincibility_timer(self):
+        if not self.invincible:
+            return
+
+        current_time = pygame.time.get_ticks()
+
+        if (current_time - self.invincibility_time) < self.invincibility_duration:
+            return
+
+        self.invincible = False
+
+    def wave_value(self):
+        value = sin(pygame.time.get_ticks())
+
+        return 255 if value >= 0 else 0
+
     def update(self):
         self.get_input()
         self.get_status()
         self.animate()
         self.animate_particles()
+        self.invincibility_timer()

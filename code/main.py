@@ -28,11 +28,20 @@ class Game:
         self.status = "overworld"
 
     def create_level(self, current_level):
-        self.level = Level(current_level, screen, self.create_overworld, self.add_coins)
+        self.level = Level(
+            current_level,
+            screen,
+            self.create_overworld,
+            self.add_coins,
+            self.change_health,
+        )
         self.status = "level"
 
     def add_coins(self, amount):
         self.coins += amount
+
+    def change_health(self, amount):
+        self.current_health += amount
 
     def run(self):
         if self.status == "overworld":
