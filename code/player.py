@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
         if self.facing_right:
             self.image = image
         else:
-            pygame.transform.flip(image, True, False)
+            self.image = pygame.transform.flip(image, True, False)
 
         if self.invincible:
             self.image.set_alpha(self.wave_value())

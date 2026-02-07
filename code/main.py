@@ -43,6 +43,15 @@ class Game:
     def change_health(self, amount):
         self.current_health += amount
 
+    def check_game_over(self):
+        if self.current_health > 0:
+            return
+
+        self.max_level = 0
+        self.current_health = 100
+        self.coins = 0
+        self.create_overworld(0, self.max_level)
+
     def run(self):
         if self.status == "overworld":
             self.overworld.run()
@@ -51,6 +60,7 @@ class Game:
             self.level.draw()
             self.ui.show_health(self.current_health, self.max_health)
             self.ui.show_coins(self.coins)
+            self.check_game_over()
 
 
 # Pygame setup.
