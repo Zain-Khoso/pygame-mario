@@ -13,11 +13,12 @@ from particles import ParticleEffect
 
 
 class Level:
-    def __init__(self, current_level, surface, create_overworld):
+    def __init__(self, current_level, surface, create_overworld, add_coins):
         # Setup
         self.display_surface = surface
         self.create_overworld = create_overworld
         self.current_level = current_level
+        self.add_coins = add_coins
 
         self.level_data = levels[self.current_level]
         self.level_unlock = self.level_data["unlock"]
@@ -71,7 +72,8 @@ class Level:
 
                 elif type == "coins":
                     coin_type = "silver" if col == "1" else "gold"
-                    tile = Coin(tile_size, x_pos, y_pos, coin_type)
+                    coin_val = 1 if col == "1" else 5
+                    tile = Coin(tile_size, x_pos, y_pos, coin_type, coin_val)
 
                 elif type == "fg palms":
                     palm_type = "small" if col == "0" else "large"
@@ -229,6 +231,12 @@ class Level:
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, True):
             self.create_overworld(self.current_level, self.level_unlock)
 
+    def coin_collisions(self):
+        collisions = pygame.sprite.spritecollide(self.player.sprite, self.coins, True)
+
+        for coin in collisions:
+            self.add_coins(coin.value)
+
     def draw(self):
         self.scroll_x()
 
@@ -269,6 +277,7 @@ class Level:
         # Coins
         self.coins.update(self.level_shift)
         self.coins.draw(self.display_surface)
+        self.coin_collisions()
 
         # Fg Palms
         self.fg_palms.update(self.level_shift)

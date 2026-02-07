@@ -60,7 +60,7 @@ class AnimatedTile(Tile):
 
 
 class Coin(AnimatedTile):
-    def __init__(self, size, x, y, type):
+    def __init__(self, size, x, y, type, value):
         frames_path = animation_frames["coins"][type]
         super().__init__(size, x, y, frames_path)
 
@@ -68,6 +68,7 @@ class Coin(AnimatedTile):
         offset_x = x + (size // 2)
         offset_y = y + (size // 2)
         self.rect = self.image.get_rect(center=(offset_x, offset_y))
+        self.value = value
 
 
 class Palm(AnimatedTile):
