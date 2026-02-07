@@ -32,11 +32,12 @@ class Icon(pygame.sprite.Sprite):
 
 
 class Overworld:
-    def __init__(self, start_level, max_level, screen):
+    def __init__(self, start_level, max_level, screen, create_level):
         # Setup
         self.display_surface = screen
         self.max_level = max_level
         self.current_level = start_level
+        self.create_level = create_level
 
         # Icon movement
         self.icon_vecter = pygame.Vector2(0, 0)
@@ -87,6 +88,9 @@ class Overworld:
             self.get_icon_vector(-1)
             self.current_level -= 1
             self.icon_moving = True
+
+        elif keys[pygame.K_SPACE]:
+            self.create_level(self.current_level)
 
     def get_icon_vector(self, next):
         current_level_pos = self.nodes.sprites()[self.current_level].rect.center
