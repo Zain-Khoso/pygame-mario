@@ -85,6 +85,9 @@ class Overworld:
         return group
 
     def draw_paths(self):
+        if self.max_level == 0:
+            return
+
         points = [
             level_data["node_pos"]
             for index, level_data in enumerate(levels.values())
