@@ -3,7 +3,7 @@ import pygame, sys
 from settings import *
 
 from overworld import Overworld
-from temp_level import Level
+from level import Level
 
 
 class Game:
@@ -26,7 +26,7 @@ class Game:
         self.status = "level"
 
     def run(self):
-        self.overworld.run() if self.status == "overworld" else self.level.run()
+        self.overworld.run() if self.status == "overworld" else self.level.draw()
 
 
 # Pygame setup.

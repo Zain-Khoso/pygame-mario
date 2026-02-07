@@ -2,6 +2,7 @@
 import pygame
 from settings import tile_size, screen_width, screen_height
 from support import import_csv_data, import_cut_graphics
+from game_data import levels
 
 from tiles import Tile, StaticTile, Crate, Coin, Palm
 from enemy import Enemy
@@ -12,11 +13,15 @@ from particles import ParticleEffect
 
 
 class Level:
-    def __init__(self, data_path, surface):
-        # World
+    def __init__(self, current_level, surface, create_overworld):
+        # Setup
         self.display_surface = surface
-        self.world_shift = 0
-        self.data_path = data_path
+        self.create_overworld = create_overworld
+        self.current_level = current_level
+
+        self.level_data = levels[self.current_level]
+        self.level_unlock = self.level_data["unlock"]
+        self.level_shift = 0
         self.level_width = 0
 
         # Level
@@ -46,7 +51,7 @@ class Level:
 
     def create_tile_group(self, type):
         group = pygame.sprite.Group()
-        data = import_csv_data(self.data_path[type])
+        data = import_csv_data(self.level_data[type])
         cut_graphics = import_cut_graphics(type)
 
         for row_index, row in enumerate(data):
@@ -95,7 +100,7 @@ class Level:
                 enemy.reverse()
 
     def create_player(self):
-        data = import_csv_data(self.data_path["player"])
+        data = import_csv_data(self.level_data["player"])
 
         for row_index, row in enumerate(data):
             for col_index, col in enumerate(row):
@@ -126,13 +131,13 @@ class Level:
         right_border = screen_width * 0.6
 
         if player_x < left_border and direction_x < 0:
-            self.world_shift = 8
+            self.level_shift = 8
             player.speed = 0
         elif player_x > right_border and direction_x > 0:
-            self.world_shift = -8
+            self.level_shift = -8
             player.speed = 0
         else:
-            self.world_shift = 0
+            self.level_shift = 0
             player.speed = 8
 
     def horizontal_movement_collision(self):
@@ -219,48 +224,48 @@ class Level:
 
         # Decorations
         self.sky.draw(self.display_surface)
-        self.clouds.draw(self.display_surface, self.world_shift)
-        self.water.draw(self.display_surface, self.world_shift)
+        self.clouds.draw(self.display_surface, self.level_shift)
+        self.water.draw(self.display_surface, self.level_shift)
 
         # Particles
-        self.dust_sprite.update(self.world_shift)
+        self.dust_sprite.update(self.level_shift)
         self.dust_sprite.draw(self.display_surface)
 
         # Bg Palms
-        self.bg_palms.update(self.world_shift)
+        self.bg_palms.update(self.level_shift)
         self.bg_palms.draw(self.display_surface)
 
         # Terrain
-        self.terrain.update(self.world_shift)
+        self.terrain.update(self.level_shift)
         self.terrain.draw(self.display_surface)
 
         # Enemies
-        self.enemies.update(self.world_shift)
+        self.enemies.update(self.level_shift)
         self.enemies.draw(self.display_surface)
         self.enemy_collisions()
 
         # Constraints
-        self.constraints.update(self.world_shift)
+        self.constraints.update(self.level_shift)
         self.constraints.draw(self.display_surface)
 
         # Crates
-        self.crates.update(self.world_shift)
+        self.crates.update(self.level_shift)
         self.crates.draw(self.display_surface)
 
         # Grass
-        self.grass.update(self.world_shift)
+        self.grass.update(self.level_shift)
         self.grass.draw(self.display_surface)
 
         # Coins
-        self.coins.update(self.world_shift)
+        self.coins.update(self.level_shift)
         self.coins.draw(self.display_surface)
 
         # Fg Palms
-        self.fg_palms.update(self.world_shift)
+        self.fg_palms.update(self.level_shift)
         self.fg_palms.draw(self.display_surface)
 
         # Goal
-        self.goal.update(self.world_shift)
+        self.goal.update(self.level_shift)
         self.goal.draw(self.display_surface)
 
         # Player
