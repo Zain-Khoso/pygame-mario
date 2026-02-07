@@ -72,6 +72,11 @@ class Overworld:
         self.icon = self.create_icon()
         self.sky = Sky(8, "overworld")
 
+        # Input timer
+        self.start_time = pygame.time.get_ticks()
+        self.allow_input = False
+        self.timer_length = 300
+
     def create_nodes(self):
         group = pygame.sprite.Group()
 
@@ -106,7 +111,7 @@ class Overworld:
     def handle_input(self):
         keys = pygame.key.get_pressed()
 
-        if self.icon_moving:
+        if self.icon_moving or not self.allow_input:
             return
 
         if keys[pygame.K_RIGHT] and self.current_level < self.max_level:
@@ -140,8 +145,20 @@ class Overworld:
                 self.icon_moving = False
                 self.icon_vecter = pygame.Vector2(0, 0)
 
+    def input_timer(self):
+        if self.allow_input:
+            return
+
+        current_time = pygame.time.get_ticks()
+
+        if current_time <= (self.start_time + self.timer_length):
+            return
+
+        self.allow_input = True
+
     def run(self):
         self.sky.draw(self.display_surface)
+        self.input_timer()
         self.handle_input()
         self.draw_paths()
         self.nodes.update()
