@@ -70,7 +70,7 @@ class Overworld:
         # Sprites
         self.nodes = self.create_nodes()
         self.icon = self.create_icon()
-        self.sky = Sky(8)
+        self.sky = Sky(8, "overworld")
 
     def create_nodes(self):
         group = pygame.sprite.Group()
