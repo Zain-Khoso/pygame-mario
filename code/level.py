@@ -219,6 +219,16 @@ class Level:
         particles = ParticleEffect(self.player.sprite.rect.midbottom - offset, "land")
         self.dust_sprite.add(particles)
 
+    def check_death(self):
+        if self.player.sprite.rect.top <= screen_height:
+            return
+
+        self.create_overworld(self.current_level, 0)
+
+    def check_win(self):
+        if pygame.sprite.spritecollide(self.player.sprite, self.goal, True):
+            self.create_overworld(self.current_level, self.level_unlock)
+
     def draw(self):
         self.scroll_x()
 
@@ -275,3 +285,7 @@ class Level:
         self.vertical_movement_collision()
         self.create_landing_dust()
         self.player.draw(self.display_surface)
+
+        # Overworld
+        self.check_death()
+        self.check_win()
