@@ -170,31 +170,21 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
-        player.rect.x += int(player.direction.x) * player.speed
+        player.collision_rect.x += int(player.direction.x) * player.speed
 
         tiles = self.terrain.sprites() + self.crates.sprites() + self.fg_palms.sprites()
 
         for tile in tiles:
-            if tile.rect.colliderect(player.rect):
+            if tile.rect.colliderect(player.collision_rect):
                 if player.direction.x < 0:
-                    player.rect.left = tile.rect.right
+                    player.collision_rect.left = tile.rect.right
                     player.on_left = True
-                    self.current_player_x = player.rect.left
+                    self.current_player_x = player.collision_rect.left
 
                 elif player.direction.x > 0:
-                    player.rect.right = tile.rect.left
+                    player.collision_rect.right = tile.rect.left
                     player.on_right = True
-                    self.current_player_x = player.rect.right
-
-        if player.on_left and (
-            player.rect.left < self.current_player_x or player.direction.x >= 0
-        ):
-            player.on_left = False
-
-        if player.on_right and (
-            player.rect.right > self.current_player_x or player.direction.x <= 0
-        ):
-            player.on_right = False
+                    self.current_player_x = player.collision_rect.right
 
     def vertical_movement_collision(self):
         player = self.player.sprite
@@ -203,22 +193,19 @@ class Level:
         tiles = self.terrain.sprites() + self.crates.sprites() + self.fg_palms.sprites()
 
         for tile in tiles:
-            if tile.rect.colliderect(player.rect):
+            if tile.rect.colliderect(player.collision_rect):
                 if player.direction.y > 0:
-                    player.rect.bottom = tile.rect.top
+                    player.collision_rect.bottom = tile.rect.top
                     player.direction.y = 0
                     player.on_ground = True
 
                 elif player.direction.y < 0:
-                    player.rect.top = tile.rect.bottom
+                    player.collision_rect.top = tile.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
-
-        if player.on_ceiling and player.direction.y > 0:
-            player.on_ceiling = False
 
     def create_jump_particles(self, pos):
         if self.player.sprite.facing_right:
