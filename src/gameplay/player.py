@@ -8,10 +8,10 @@ from ..support import import_folder
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, game_state: State, paths_audio, create_jump_particles):
+    def __init__(self, pos, state: State, paths_audio, create_jump_particles):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
-        self.state = game_state
+        self.state = state
         self.create_jump_particles = create_jump_particles
 
         # Loading assets.

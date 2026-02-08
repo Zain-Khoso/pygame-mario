@@ -14,21 +14,21 @@ from .enemy import Enemy
 from ..decoration import Sky, Water, Clouds
 
 
-class Level:
-    def __init__(self, game_state: State, paths_audio, create_overworld):
+class Gameplay:
+    def __init__(self, state: State, paths_audio, show_menu):
         # Setup
         pygame.display.set_caption("Mario - Game")
         self.display_surface = pygame.display.get_surface()
-        self.state = game_state
+        self.state = state
         self.paths_audio = paths_audio
-        self.create_overworld = create_overworld
+        self.show_menu = show_menu
 
         self.level_data = levels[self.state.current_level]
         self.level_unlock = self.level_data["unlock"]
         self.level_shift = 0
         self.level_width = 0
 
-        # Level
+        # Gameplay
         self.terrain = self.create_tile_group("terrain")
         self.grass = self.create_tile_group("grass")
         self.coins = self.create_tile_group("coins")
@@ -220,14 +220,14 @@ class Level:
         if self.player.sprite.rect.top <= screen_height:
             return
 
-        self.create_overworld()
+        self.show_menu()
         self.state.reset()
 
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, True):
             self.state.unlock_level()
             self.state.reset_for_level()
-            self.create_overworld()
+            self.show_menu()
 
     def enemy_collisions(self):
         for enemy in self.enemies.sprites():
@@ -321,6 +321,6 @@ class Level:
         self.create_landing_dust()
         self.player.draw(self.display_surface)
 
-        # Overworld
+        # Menu
         self.check_death()
         self.check_win()

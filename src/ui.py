@@ -6,10 +6,10 @@ from .state import State
 
 
 class UI:
-    def __init__(self, game_state: State):
+    def __init__(self, state: State):
         # Setup
         self.display_surface = pygame.display.get_surface()
-        self.state = game_state
+        self.state = state
 
         self.health_bar = pygame.image.load(
             "./assets/graphics/ui/health_bar.png"

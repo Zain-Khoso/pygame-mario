@@ -3,8 +3,8 @@ import sys, csv, pygame
 
 # Local Imports
 from .settings import *
-from .overworld import Overworld
-from .level import Level
+from .menu import Menu
+from .gameplay import Gameplay
 from .state import State
 from .ui import UI
 
@@ -29,20 +29,18 @@ class Game:
         self.paths_ui = self.load_file_paths(csv_ui)
 
         # Background music setup
-        self.overworld_music = pygame.mixer.Sound(
-            self.paths_audio["music"]["overworld"]
-        )
-        self.overworld_music.set_volume(0.1)
-        self.level_music = pygame.mixer.Sound(self.paths_audio["music"]["level"])
-        self.level_music.set_volume(0.1)
+        self.music_menu = pygame.mixer.Sound(self.paths_audio["music"]["overworld"])
+        self.music_menu.set_volume(0.1)
+        self.music_gameplay = pygame.mixer.Sound(self.paths_audio["music"]["level"])
+        self.music_gameplay.set_volume(0.1)
 
         # Game state
-        self.game_state = State()
-        self.game_state.load()
+        self.state = State()
+        self.state.load()
 
         # Game initialization
-        self.create_overworld()
-        self.ui = UI(self.game_state)
+        self.show_menu()
+        self.ui = UI(self.state)
 
     def load_file_paths(self, file_path):
         paths = {}
@@ -62,29 +60,29 @@ class Game:
 
         return paths
 
-    def create_overworld(self):
-        self.overworld = Overworld(self.game_state, self.create_level)
-        self.game_state.set_in_game(False)
+    def show_menu(self):
+        self.overworld = Menu(self.state, self.show_gameplay)
+        self.state.set_in_game(False)
 
-        self.level_music.stop()
-        self.overworld_music.play(-1)
+        self.music_gameplay.stop()
+        self.music_menu.play(-1)
 
-    def create_level(self):
-        self.level = Level(self.game_state, self.paths_audio, self.create_overworld)
-        self.game_state.set_in_game(True)
+    def show_gameplay(self):
+        self.level = Gameplay(self.state, self.paths_audio, self.show_menu)
+        self.state.set_in_game(True)
 
-        self.overworld_music.stop()
-        self.level_music.play(-1)
+        self.music_menu.stop()
+        self.music_gameplay.play(-1)
 
     def check_game_over(self):
-        if self.game_state.current_health > 0:
+        if self.state.current_health > 0:
             return
 
-        self.game_state.reset()
-        self.create_overworld()
+        self.state.reset()
+        self.show_menu()
 
     def load_screen(self):
-        if self.game_state.in_game:
+        if self.state.in_game:
             self.level.draw()
             self.ui.show_health()
             self.ui.show_coins()

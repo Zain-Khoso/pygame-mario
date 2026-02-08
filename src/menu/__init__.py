@@ -9,13 +9,13 @@ from .level_platform import Platform
 from .player_hat import Hat
 
 
-class Overworld:
-    def __init__(self, game_state: State, create_level):
+class Menu:
+    def __init__(self, state: State, show_gameplay):
         # Setup
-        pygame.display.set_caption("Mario - Overworld")
+        pygame.display.set_caption("Mario - Menu")
         self.display_surface = pygame.display.get_surface()
-        self.state = game_state
-        self.create_level = create_level
+        self.state = state
+        self.show_gameplay = show_gameplay
 
         # Icon movement
         self.icon_vecter = pygame.Vector2(0, 0)
@@ -83,7 +83,7 @@ class Overworld:
             self.icon_moving = True
 
         elif keys[pygame.K_SPACE]:
-            self.create_level()
+            self.show_gameplay()
 
     def get_icon_vector(self, next):
         current_level_pos = self.nodes.sprites()[self.state.current_level].rect.center
