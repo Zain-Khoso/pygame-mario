@@ -1,8 +1,11 @@
-from .settings import vertical_tile_number, tile_size, screen_width
+# Lib Imports
 import pygame
-from .tiles import AnimatedTile, StaticTile
-from .support import import_folder
 from random import choice, randint
+
+# Local Imports
+from .settings import vertical_tile_number, tile_size, screen_width
+from .support import import_folder
+from .tiles import AnimatedTile, StaticTile
 
 
 class Sky:

@@ -8,3 +8,4 @@ screen_height = vertical_tile_number * tile_size
 
 # .csv paths
 csv_audio = "data/asset_paths/audio.csv"
+csv_state = "data/state.csv"
