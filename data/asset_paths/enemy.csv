@@ -1,0 +1,3 @@
+type,name,path
+animation,run,assets/graphics/enemy/run/
+animation,explosion,assets/graphics/enemy/explosion/

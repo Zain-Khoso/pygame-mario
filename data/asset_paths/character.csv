@@ -1,0 +1,9 @@
+type,name,path
+image,hat,assets/graphics/character/hat.png
+animation,dust_run,assets/graphics/character/dust/run/
+animation,dust_jump,assets/graphics/character/dust/jump/
+animation,dust_land,assets/graphics/character/dust/land/
+animation,idle,assets/graphics/character/idle/
+animation,run,assets/graphics/character/run/
+animation,jump,assets/graphics/character/jump/
+animation,fall,assets/graphics/character/fall/
