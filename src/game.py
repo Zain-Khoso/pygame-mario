@@ -44,7 +44,7 @@ class Game:
 
         # Game initialization
         self.show_menu()
-        self.ui = UI(self.state)
+        self.ui = UI(self.state, self.paths)
 
     def load_file_paths(self, file_path):
         paths = {}

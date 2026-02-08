@@ -6,22 +6,25 @@ from .state import State
 
 
 class UI:
-    def __init__(self, state: State):
+    def __init__(self, state: State, paths):
         # Setup
         self.display_surface = pygame.display.get_surface()
         self.state = state
+        self.paths = paths
 
         self.health_bar = pygame.image.load(
-            "./assets/graphics/ui/health_bar.png"
+            self.paths["ui"]["image"]["health_bar"]
         ).convert_alpha()
         self.health_bar_top_left = (54, 39)
         self.health_max_width = 152
         self.health_bar_height = 4
 
-        self.coin = pygame.image.load("./assets/graphics/ui/coin.png").convert_alpha()
+        self.coin = pygame.image.load(
+            self.paths["coins"]["image"]["silver"]
+        ).convert_alpha()
         self.coin_rect = self.coin.get_rect(topleft=(50, 61))
 
-        self.font = pygame.font.Font("./assets/graphics/ui/ARCADEPI.TTF", 30)
+        self.font = pygame.font.Font(self.paths["ui"]["font"]["arcade_pi"], 30)
 
     def show_health(self):
         health_ratio = self.state.current_health / self.state.max_health

@@ -17,3 +17,14 @@ csv_levels = "data/asset_paths/levels.csv"
 csv_menu = "data/asset_paths/menu.csv"
 csv_terrain = "data/asset_paths/terrain.csv"
 csv_ui = "data/asset_paths/ui.csv"
+
+# Menu
+platforms = [
+    (110, 400),
+    (300, 220),
+    (480, 610),
+    (610, 350),
+    (880, 210),
+    (1050, 400),
+]
+player_hat_speed = 8

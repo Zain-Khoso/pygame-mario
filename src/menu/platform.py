@@ -2,12 +2,20 @@
 import pygame
 
 # Local Imports
+from ..settings import player_hat_speed
 from ..support import import_folder
+from ..state import State
 
 
 class Platform(pygame.sprite.Sprite):
-    def __init__(self, pos, locked, icon_speed, path):
+    def __init__(self, pos, state: State, index: int, paths):
         super().__init__()
+
+        # Setup
+        self.position = pos
+        self.state = state
+        self.locked = index > self.state.unlocked_levels
+        path = paths["menu"]["animation"][("level_%s" % str(index + 1))]
 
         # Animation
         self.frame = 0
@@ -16,12 +24,15 @@ class Platform(pygame.sprite.Sprite):
 
         self.image = self.frames[self.frame]
         self.rect = self.image.get_rect(center=pos)
-        self.locked = locked
 
-        detection_zone_x_pos = self.rect.centerx - (icon_speed / 2)
-        detection_zone_y_pos = self.rect.centery - (icon_speed / 2)
+        # Collision detection
+        detection_zone_x_pos = self.rect.centerx - (player_hat_speed / 2)
+        detection_zone_y_pos = self.rect.centery - (player_hat_speed / 2)
         self.detection_zone = pygame.Rect(
-            detection_zone_x_pos, detection_zone_y_pos, icon_speed, icon_speed
+            detection_zone_x_pos,
+            detection_zone_y_pos,
+            player_hat_speed,
+            player_hat_speed,
         )
 
     def animate(self):
