@@ -2,7 +2,7 @@
 import sys, csv, pygame
 
 # Local Imports
-from .settings import screen_width, screen_height, csv_audio
+from .settings import *
 from .overworld import Overworld
 from .level import Level
 from .state import State
@@ -18,14 +18,22 @@ class Game:
         self.clock = pygame.time.Clock()
 
         # Loading asset paths
-        self.audio_paths = self.load_file_paths(csv_audio)
+        self.paths_audio = self.load_file_paths(csv_audio)
+        self.paths_character = self.load_file_paths(csv_character)
+        self.paths_coins = self.load_file_paths(csv_coins)
+        self.paths_decorations = self.load_file_paths(csv_decorations)
+        self.paths_enemy = self.load_file_paths(csv_enemy)
+        self.paths_levels = self.load_file_paths(csv_levels)
+        self.paths_menu = self.load_file_paths(csv_menu)
+        self.paths_terrain = self.load_file_paths(csv_terrain)
+        self.paths_ui = self.load_file_paths(csv_ui)
 
         # Background music setup
         self.overworld_music = pygame.mixer.Sound(
-            self.audio_paths["music"]["overworld"]
+            self.paths_audio["music"]["overworld"]
         )
         self.overworld_music.set_volume(0.1)
-        self.level_music = pygame.mixer.Sound(self.audio_paths["music"]["level"])
+        self.level_music = pygame.mixer.Sound(self.paths_audio["music"]["level"])
         self.level_music.set_volume(0.1)
 
         # Game state
@@ -62,7 +70,7 @@ class Game:
         self.overworld_music.play(-1)
 
     def create_level(self):
-        self.level = Level(self.game_state, self.audio_paths, self.create_overworld)
+        self.level = Level(self.game_state, self.paths_audio, self.create_overworld)
         self.game_state.set_in_game(True)
 
         self.overworld_music.stop()

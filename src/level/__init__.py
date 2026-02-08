@@ -15,12 +15,12 @@ from ..decoration import Sky, Water, Clouds
 
 
 class Level:
-    def __init__(self, game_state: State, audio_paths, create_overworld):
+    def __init__(self, game_state: State, paths_audio, create_overworld):
         # Setup
         pygame.display.set_caption("Mario - Game")
         self.display_surface = pygame.display.get_surface()
         self.state = game_state
-        self.audio_paths = audio_paths
+        self.paths_audio = paths_audio
         self.create_overworld = create_overworld
 
         self.level_data = levels[self.state.current_level]
@@ -55,9 +55,9 @@ class Level:
         self.clouds = Clouds(400, self.level_width, 20)
 
         # Audio
-        self.coin_sound = pygame.mixer.Sound(self.audio_paths["effect"]["coin"])
+        self.coin_sound = pygame.mixer.Sound(self.paths_audio["effect"]["coin"])
         self.coin_sound.set_volume(0.4)
-        self.stomp_sound = pygame.mixer.Sound(self.audio_paths["effect"]["stomp"])
+        self.stomp_sound = pygame.mixer.Sound(self.paths_audio["effect"]["stomp"])
         self.stomp_sound.set_volume(0.4)
 
     def create_tile_group(self, type):
@@ -118,7 +118,7 @@ class Level:
                     player = Player(
                         (x_pos, y_pos),
                         self.state,
-                        self.audio_paths,
+                        self.paths_audio,
                         self.create_jump_particles,
                     )
                     self.player.add(player)
