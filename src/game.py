@@ -18,20 +18,24 @@ class Game:
         self.clock = pygame.time.Clock()
 
         # Loading asset paths
-        self.paths_audio = self.load_file_paths(csv_audio)
-        self.paths_character = self.load_file_paths(csv_character)
-        self.paths_coins = self.load_file_paths(csv_coins)
-        self.paths_decorations = self.load_file_paths(csv_decorations)
-        self.paths_enemy = self.load_file_paths(csv_enemy)
-        self.paths_levels = self.load_file_paths(csv_levels)
-        self.paths_menu = self.load_file_paths(csv_menu)
-        self.paths_terrain = self.load_file_paths(csv_terrain)
-        self.paths_ui = self.load_file_paths(csv_ui)
+        self.paths = {
+            "audio": self.load_file_paths(csv_audio),
+            "character": self.load_file_paths(csv_character),
+            "coins": self.load_file_paths(csv_coins),
+            "decorations": self.load_file_paths(csv_decorations),
+            "enemy": self.load_file_paths(csv_enemy),
+            "levels": self.load_file_paths(csv_levels),
+            "menu": self.load_file_paths(csv_menu),
+            "terrain": self.load_file_paths(csv_terrain),
+            "ui": self.load_file_paths(csv_ui),
+        }
 
         # Background music setup
-        self.music_menu = pygame.mixer.Sound(self.paths_audio["music"]["overworld"])
+        self.music_menu = pygame.mixer.Sound(self.paths["audio"]["music"]["menu"])
         self.music_menu.set_volume(0.1)
-        self.music_gameplay = pygame.mixer.Sound(self.paths_audio["music"]["level"])
+        self.music_gameplay = pygame.mixer.Sound(
+            self.paths["audio"]["music"]["gameplay"]
+        )
         self.music_gameplay.set_volume(0.1)
 
         # Game state
@@ -61,14 +65,14 @@ class Game:
         return paths
 
     def show_menu(self):
-        self.overworld = Menu(self.state, self.show_gameplay)
+        self.menu = Menu(self.state, self.paths, self.show_gameplay)
         self.state.set_in_game(False)
 
         self.music_gameplay.stop()
         self.music_menu.play(-1)
 
     def show_gameplay(self):
-        self.level = Gameplay(self.state, self.paths_audio, self.show_menu)
+        self.gameplay = Gameplay(self.state, self.paths, self.show_menu)
         self.state.set_in_game(True)
 
         self.music_menu.stop()
@@ -83,12 +87,12 @@ class Game:
 
     def load_screen(self):
         if self.state.in_game:
-            self.level.draw()
+            self.gameplay.draw()
             self.ui.show_health()
             self.ui.show_coins()
             self.check_game_over()
         else:
-            self.overworld.run()
+            self.menu.run()
 
     def handle_events(self):
         for event in pygame.event.get():

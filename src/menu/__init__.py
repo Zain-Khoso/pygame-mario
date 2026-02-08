@@ -10,11 +10,12 @@ from .player_hat import Hat
 
 
 class Menu:
-    def __init__(self, state: State, show_gameplay):
+    def __init__(self, state: State, paths, show_gameplay):
         # Setup
         pygame.display.set_caption("Mario - Menu")
         self.display_surface = pygame.display.get_surface()
         self.state = state
+        self.paths = paths
         self.show_gameplay = show_gameplay
 
         # Icon movement
