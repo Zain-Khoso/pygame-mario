@@ -1,8 +1,8 @@
 # Imports.
 import pygame
 
-from game_data import animation_frames
-from support import import_folder
+from .game_data import animation_frames
+from .support import import_folder
 
 
 class Tile(pygame.sprite.Sprite):
@@ -25,7 +25,7 @@ class StaticTile(Tile):
 class Crate(StaticTile):
     def __init__(self, size, x, y):
 
-        image = pygame.image.load("./graphics/terrain/crate.png").convert_alpha()
+        image = pygame.image.load("./assets/graphics/terrain/crate.png").convert_alpha()
         super().__init__(size, x, y, image)
 
         # Position.

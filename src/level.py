@@ -1,15 +1,15 @@
 # Imports
 import pygame
-from settings import tile_size, screen_width, screen_height
-from support import import_csv_data, import_cut_graphics
-from game_data import levels
+from .settings import tile_size, screen_width, screen_height
+from .support import import_csv_data, import_cut_graphics
+from .game_data import levels
 
-from tiles import Tile, StaticTile, Crate, Coin, Palm
-from enemy import Enemy
-from decoration import Sky, Water, Clouds
+from .tiles import Tile, StaticTile, Crate, Coin, Palm
+from .enemy import Enemy
+from .decoration import Sky, Water, Clouds
 
-from player import Player
-from particles import ParticleEffect
+from .player import Player
+from .particles import ParticleEffect
 
 
 class Level:
@@ -55,9 +55,9 @@ class Level:
         self.clouds = Clouds(400, self.level_width, 20)
 
         # Audio
-        self.coin_sound = pygame.mixer.Sound("./audio/effects/coin.wav")
+        self.coin_sound = pygame.mixer.Sound("./assets/audio/effects/coin.wav")
         self.coin_sound.set_volume(0.4)
-        self.stomp_sound = pygame.mixer.Sound("./audio/effects/stomp.wav")
+        self.stomp_sound = pygame.mixer.Sound("./assets/audio/effects/stomp.wav")
         self.stomp_sound.set_volume(0.4)
 
     def create_tile_group(self, type):
@@ -125,7 +125,7 @@ class Level:
 
                 if col == "1":
                     hat_surface = pygame.image.load(
-                        "./graphics/character/hat.png"
+                        "./assets/graphics/character/hat.png"
                     ).convert_alpha()
 
                     tile = StaticTile(tile_size, x_pos, y_pos, hat_surface)

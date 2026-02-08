@@ -1,7 +1,7 @@
 # Imports
 import pygame
 from math import sin
-from support import import_folder
+from .support import import_folder
 
 
 class Player(pygame.sprite.Sprite):
@@ -12,8 +12,8 @@ class Player(pygame.sprite.Sprite):
         self.create_jump_particles = create_jump_particles
 
         # Loading assets.
-        self.animations_dir = "graphics/character/"
-        self.dust_particles_dir = "graphics/character/dust_particles/run/"
+        self.animations_dir = "./assets/graphics/character/"
+        self.dust_particles_dir = "./assets/graphics/character/dust_particles/run/"
 
         self.animations = {"idle": [], "run": [], "jump": [], "fall": []}
         self.dust_particles = import_folder(self.dust_particles_dir)
@@ -46,9 +46,9 @@ class Player(pygame.sprite.Sprite):
         self.invincibility_time = 0
 
         # Audio
-        self.jump_sound = pygame.mixer.Sound("./audio/effects/jump.wav")
+        self.jump_sound = pygame.mixer.Sound("./assets/audio/effects/jump.wav")
         self.jump_sound.set_volume(0.2)
-        self.hit_sound = pygame.mixer.Sound("./audio/effects/hit.wav")
+        self.hit_sound = pygame.mixer.Sound("./assets/audio/effects/hit.wav")
         self.hit_sound.set_volume(0.2)
 
     def import_character_assets(self):

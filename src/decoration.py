@@ -1,18 +1,20 @@
-from settings import vertical_tile_number, tile_size, screen_width
+from .settings import vertical_tile_number, tile_size, screen_width
 import pygame
-from tiles import AnimatedTile, StaticTile
-from support import import_folder
+from .tiles import AnimatedTile, StaticTile
+from .support import import_folder
 from random import choice, randint
 
 
 class Sky:
     def __init__(self, horizon, style="level"):
-        self.top = pygame.image.load("./graphics/decoration/sky/sky_top.png").convert()
+        self.top = pygame.image.load(
+            "./assets/graphics/decoration/sky/sky_top.png"
+        ).convert()
         self.bottom = pygame.image.load(
-            "./graphics/decoration/sky/sky_bottom.png"
+            "./assets/graphics/decoration/sky/sky_bottom.png"
         ).convert()
         self.middle = pygame.image.load(
-            "./graphics/decoration/sky/sky_middle.png"
+            "./assets/graphics/decoration/sky/sky_middle.png"
         ).convert()
         self.horizon = horizon
 
@@ -24,7 +26,7 @@ class Sky:
         self.style = style
 
         if self.style == "overworld":
-            palm_surfaces = import_folder("./graphics/overworld/palms")
+            palm_surfaces = import_folder("./assets/graphics/overworld/palms")
             self.palms = []
 
             for surface in [choice(palm_surfaces) for image in range(10)]:
@@ -33,7 +35,7 @@ class Sky:
                 rect = surface.get_rect(midbottom=(x, y))
                 self.palms.append((surface, rect))
 
-            cloud_surfaces = import_folder("./graphics/overworld/clouds")
+            cloud_surfaces = import_folder("./assets/graphics/overworld/clouds")
             self.clouds = []
 
             for surface in [choice(cloud_surfaces) for image in range(10)]:
@@ -67,7 +69,7 @@ class Water:
         for tile in range(tile_x_amount):
             x = tile * water_tile_width + water_start
             y = top
-            sprite = AnimatedTile(192, x, y, "./graphics/decoration/water")
+            sprite = AnimatedTile(192, x, y, "./assets/graphics/decoration/water")
             self.water_sprites.add(sprite)
 
     def draw(self, surface, shift):
@@ -77,7 +79,7 @@ class Water:
 
 class Clouds:
     def __init__(self, horizon, level_width, cloud_number):
-        cloud_surf_list = import_folder("./graphics/decoration/clouds")
+        cloud_surf_list = import_folder("./assets/graphics/decoration/clouds")
         min_x = -screen_width
         max_x = level_width + screen_width
         min_y = 0

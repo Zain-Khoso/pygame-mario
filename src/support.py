@@ -3,8 +3,8 @@ from os import walk
 from csv import reader
 import pygame
 
-from settings import tile_size
-from game_data import cut_graphics
+from .settings import tile_size
+from .game_data import cut_graphics
 
 
 # Use to import animation frames

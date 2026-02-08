@@ -2,8 +2,8 @@
 import pygame
 from random import randint
 
-from game_data import animation_frames
-from tiles import AnimatedTile
+from .game_data import animation_frames
+from .tiles import AnimatedTile
 
 
 class Enemy(AnimatedTile):

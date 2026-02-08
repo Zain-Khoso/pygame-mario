@@ -1,9 +1,9 @@
 # Imports
 import pygame
-from game_data import levels
+from .game_data import levels
 
-from support import import_folder
-from decoration import Sky
+from .support import import_folder
+from .decoration import Sky
 
 
 class Node(pygame.sprite.Sprite):
@@ -47,7 +47,9 @@ class Icon(pygame.sprite.Sprite):
         super().__init__()
 
         self.pos = pos
-        self.image = pygame.image.load("./graphics/overworld/hat.png").convert_alpha()
+        self.image = pygame.image.load(
+            "./assets/graphics/overworld/hat.png"
+        ).convert_alpha()
         self.rect = self.image.get_rect(center=self.pos)
 
     def update(self):

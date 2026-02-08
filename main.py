@@ -1,10 +1,10 @@
 # Imports.
 import pygame, sys
-from settings import *
+from src.settings import *
 
-from overworld import Overworld
-from level import Level
-from ui import UI
+from src.overworld import Overworld
+from src.level import Level
+from src.ui import UI
 
 
 class Game:
@@ -14,9 +14,9 @@ class Game:
         self.current_health = 100
         self.coins = 0
 
-        self.overworld_music = pygame.mixer.Sound("./audio/overworld_music.wav")
+        self.overworld_music = pygame.mixer.Sound("./assets/audio/overworld_music.wav")
         self.overworld_music.set_volume(0.1)
-        self.level_music = pygame.mixer.Sound("./audio/level_music.wav")
+        self.level_music = pygame.mixer.Sound("./assets/audio/level_music.wav")
         self.level_music.set_volume(0.1)
 
         self.create_overworld(0, self.max_level)
