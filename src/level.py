@@ -14,7 +14,13 @@ from .particles import ParticleEffect
 
 class Level:
     def __init__(
-        self, current_level, surface, create_overworld, add_coins, change_health
+        self,
+        current_level,
+        surface,
+        create_overworld,
+        add_coins,
+        change_health,
+        audio_paths,
     ):
         # Setup
         self.display_surface = surface
@@ -22,6 +28,7 @@ class Level:
         self.current_level = current_level
         self.add_coins = add_coins
         self.change_health = change_health
+        self.audio_paths = audio_paths
 
         self.level_data = levels[self.current_level]
         self.level_unlock = self.level_data["unlock"]
@@ -55,9 +62,9 @@ class Level:
         self.clouds = Clouds(400, self.level_width, 20)
 
         # Audio
-        self.coin_sound = pygame.mixer.Sound("./assets/audio/effects/coin.wav")
+        self.coin_sound = pygame.mixer.Sound(self.audio_paths["effect"]["coin"])
         self.coin_sound.set_volume(0.4)
-        self.stomp_sound = pygame.mixer.Sound("./assets/audio/effects/stomp.wav")
+        self.stomp_sound = pygame.mixer.Sound(self.audio_paths["effect"]["stomp"])
         self.stomp_sound.set_volume(0.4)
 
     def create_tile_group(self, type):
@@ -120,6 +127,7 @@ class Level:
                         self.display_surface,
                         self.create_jump_particles,
                         self.change_health,
+                        self.audio_paths,
                     )
                     self.player.add(player)
 

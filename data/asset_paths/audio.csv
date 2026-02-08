@@ -1,0 +1,7 @@
+type,name,path
+effect,coin,assets/audio/effects/coin.wav
+effect,hit,assets/audio/effects/hit.wav
+effect,jump,assets/audio/effects/jump.wav
+effect,stomp,assets/audio/effects/stomp.wav
+music,level,assets/audio/music/level.wav
+music,overworld,assets/audio/music/overworld.wav

@@ -5,7 +5,7 @@ from .support import import_folder
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, surface, create_jump_particles, change_health):
+    def __init__(self, pos, surface, create_jump_particles, change_health, audio_paths):
         super().__init__()
         self.display_surface = surface
         self.change_health = change_health
@@ -46,9 +46,9 @@ class Player(pygame.sprite.Sprite):
         self.invincibility_time = 0
 
         # Audio
-        self.jump_sound = pygame.mixer.Sound("./assets/audio/effects/jump.wav")
+        self.jump_sound = pygame.mixer.Sound(audio_paths["effect"]["jump"])
         self.jump_sound.set_volume(0.2)
-        self.hit_sound = pygame.mixer.Sound("./assets/audio/effects/hit.wav")
+        self.hit_sound = pygame.mixer.Sound(audio_paths["effect"]["hit"])
         self.hit_sound.set_volume(0.2)
 
     def import_character_assets(self):
