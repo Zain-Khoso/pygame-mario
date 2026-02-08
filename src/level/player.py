@@ -1,14 +1,17 @@
-# Imports
+# Lib Imports
 import pygame
 from math import sin
-from .support import import_folder
+
+# Local Imports
+from ..state import State
+from ..support import import_folder
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, surface, create_jump_particles, change_health, audio_paths):
+    def __init__(self, pos, game_state: State, audio_paths, create_jump_particles):
         super().__init__()
-        self.display_surface = surface
-        self.change_health = change_health
+        self.display_surface = pygame.display.get_surface()
+        self.state = game_state
         self.create_jump_particles = create_jump_particles
 
         # Loading assets.
@@ -136,7 +139,7 @@ class Player(pygame.sprite.Sprite):
         if self.invincible:
             return
 
-        self.change_health(-15)
+        self.state.change_health(-15)
         self.hit_sound.play()
         self.invincible = True
         self.invincibility_time = pygame.time.get_ticks()

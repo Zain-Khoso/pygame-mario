@@ -1,36 +1,29 @@
-# Imports
+# Lib Imports
 import pygame
-from .settings import tile_size, screen_width, screen_height
-from .support import import_csv_data, import_cut_graphics
-from .game_data import levels
 
-from .tiles import Tile, StaticTile, Crate, Coin, Palm
-from .enemy import Enemy
-from .decoration import Sky, Water, Clouds
+# Local Imports
+from ..state import State
+from ..settings import tile_size, screen_width, screen_height
+from ..support import import_csv_data, import_cut_graphics
+from ..game_data import levels
 
+from ..tiles import Tile, StaticTile, Crate, Coin, Palm
 from .player import Player
 from .particles import ParticleEffect
+from .enemy import Enemy
+from ..decoration import Sky, Water, Clouds
 
 
 class Level:
-    def __init__(
-        self,
-        current_level,
-        surface,
-        create_overworld,
-        add_coins,
-        change_health,
-        audio_paths,
-    ):
+    def __init__(self, game_state: State, audio_paths, create_overworld):
         # Setup
-        self.display_surface = surface
-        self.create_overworld = create_overworld
-        self.current_level = current_level
-        self.add_coins = add_coins
-        self.change_health = change_health
+        pygame.display.set_caption("Mario - Game")
+        self.display_surface = pygame.display.get_surface()
+        self.state = game_state
         self.audio_paths = audio_paths
+        self.create_overworld = create_overworld
 
-        self.level_data = levels[self.current_level]
+        self.level_data = levels[self.state.current_level]
         self.level_unlock = self.level_data["unlock"]
         self.level_shift = 0
         self.level_width = 0
@@ -124,10 +117,9 @@ class Level:
                 if col == "0":
                     player = Player(
                         (x_pos, y_pos),
-                        self.display_surface,
-                        self.create_jump_particles,
-                        self.change_health,
+                        self.state,
                         self.audio_paths,
+                        self.create_jump_particles,
                     )
                     self.player.add(player)
 
@@ -228,11 +220,14 @@ class Level:
         if self.player.sprite.rect.top <= screen_height:
             return
 
-        self.create_overworld(self.current_level, 0)
+        self.create_overworld()
+        self.state.reset()
 
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, True):
-            self.create_overworld(self.current_level, self.level_unlock)
+            self.state.unlock_level()
+            self.state.reset_for_level()
+            self.create_overworld()
 
     def enemy_collisions(self):
         for enemy in self.enemies.sprites():
@@ -264,7 +259,7 @@ class Level:
 
         for coin in collisions:
             self.coin_sound.play()
-            self.add_coins(coin.value)
+            self.state.add_coin(coin)
 
     def draw(self):
         self.scroll_x()

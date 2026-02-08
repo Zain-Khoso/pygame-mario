@@ -2,6 +2,7 @@
 import pygame
 
 # Local Imports
+from ..state import State
 from ..game_data import levels
 from ..decoration import Sky
 from .level_platform import Platform
@@ -9,11 +10,11 @@ from .player_hat import Hat
 
 
 class Overworld:
-    def __init__(self, start_level, max_level, screen, create_level):
+    def __init__(self, game_state: State, create_level):
         # Setup
-        self.display_surface = screen
-        self.max_level = max_level
-        self.current_level = start_level
+        pygame.display.set_caption("Mario - Overworld")
+        self.display_surface = pygame.display.get_surface()
+        self.state = game_state
         self.create_level = create_level
 
         # Icon movement
@@ -37,27 +38,27 @@ class Overworld:
         for index, level_data in enumerate(levels.values()):
             pos = level_data["node_pos"]
             graphics = level_data["node_graphics"]
-            locked = index > self.max_level
+            locked = index > self.state.unlocked_levels
 
             group.add(Platform(pos, locked, self.icon_speed, graphics))
 
         return group
 
     def draw_paths(self):
-        if self.max_level == 0:
+        if self.state.unlocked_levels == 0:
             return
 
         points = [
             level_data["node_pos"]
             for index, level_data in enumerate(levels.values())
-            if index <= self.max_level
+            if index <= self.state.unlocked_levels
         ]
         pygame.draw.lines(self.display_surface, "#a04f45", False, points, 6)
 
     def create_icon(self):
         group = pygame.sprite.GroupSingle()
 
-        icon = Hat(self.nodes.sprites()[self.current_level].rect.center)
+        icon = Hat(self.nodes.sprites()[self.state.current_level].rect.center)
         group.add(icon)
 
         return group
@@ -68,22 +69,27 @@ class Overworld:
         if self.icon_moving or not self.allow_input:
             return
 
-        if keys[pygame.K_RIGHT] and self.current_level < self.max_level:
+        if (
+            keys[pygame.K_RIGHT]
+            and self.state.current_level < self.state.unlocked_levels
+        ):
             self.get_icon_vector(1)
-            self.current_level += 1
+            self.state.change_level(1)
             self.icon_moving = True
 
-        elif keys[pygame.K_LEFT] and self.current_level > 0:
+        elif keys[pygame.K_LEFT] and self.state.current_level > 0:
             self.get_icon_vector(-1)
-            self.current_level -= 1
+            self.state.change_level(-1)
             self.icon_moving = True
 
         elif keys[pygame.K_SPACE]:
-            self.create_level(self.current_level)
+            self.create_level()
 
     def get_icon_vector(self, next):
-        current_level_pos = self.nodes.sprites()[self.current_level].rect.center
-        next_level_pos = self.nodes.sprites()[self.current_level + next].rect.center
+        current_level_pos = self.nodes.sprites()[self.state.current_level].rect.center
+        next_level_pos = self.nodes.sprites()[
+            self.state.current_level + next
+        ].rect.center
 
         start_vector = pygame.math.Vector2(current_level_pos)
         end_vector = pygame.math.Vector2(next_level_pos)
@@ -93,7 +99,7 @@ class Overworld:
     def update_icon_pos(self):
         if self.icon_moving and self.icon_vecter:
             self.icon.sprite.pos += self.icon_vecter * self.icon_speed
-            target_node = self.nodes.sprites()[self.current_level]
+            target_node = self.nodes.sprites()[self.state.current_level]
 
             if target_node.detection_zone.collidepoint(self.icon.sprite.pos):
                 self.icon_moving = False

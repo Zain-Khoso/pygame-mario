@@ -1,10 +1,15 @@
 # Imports
 import pygame
 
+# Local Imports
+from .state import State
+
 
 class UI:
-    def __init__(self, surface):
-        self.display_surface = surface
+    def __init__(self, game_state: State):
+        # Setup
+        self.display_surface = pygame.display.get_surface()
+        self.state = game_state
 
         self.health_bar = pygame.image.load(
             "./assets/graphics/ui/health_bar.png"
@@ -18,8 +23,8 @@ class UI:
 
         self.font = pygame.font.Font("./assets/graphics/ui/ARCADEPI.TTF", 30)
 
-    def show_health(self, current_health, full):
-        health_ratio = current_health / full
+    def show_health(self):
+        health_ratio = self.state.current_health / self.state.max_health
         current_bar_width = self.health_max_width * health_ratio
         bar_rect = pygame.Rect(
             self.health_bar_top_left, (current_bar_width, self.health_bar_height)
@@ -28,8 +33,9 @@ class UI:
         self.display_surface.blit(self.health_bar, (20, 10))
         pygame.draw.rect(self.display_surface, "#dc4949", bar_rect)
 
-    def show_coins(self, amount):
-        text = self.font.render(str(amount), False, "#33323d")
+    def show_coins(self):
+        amount = str(self.state.current_coins)
+        text = self.font.render(amount, False, "#33323d")
         text_rect = text.get_rect(
             midleft=(self.coin_rect.centerx + 20, self.coin_rect.centery)
         )
