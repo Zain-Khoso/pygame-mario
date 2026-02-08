@@ -1,6 +1,6 @@
 type,name,path
 image,crate,assets/graphics/terrain/crate
 image,tiles,assets/graphics/terrain/terrain_tiles.png
-animation,plam_bg,assets/graphics/terrain/plam_bg/
-animation,plam_large,assets/graphics/terrain/plam_large/
-animation,plam_small,assets/graphics/terrain/plam_small/
+animation,palm_bg,assets/graphics/terrain/palm_bg/
+animation,palm_large,assets/graphics/terrain/palm_large/
+animation,palm_small,assets/graphics/terrain/palm_small/
