@@ -4,8 +4,8 @@ import pygame
 # Local Imports
 from ..state import State
 from ..settings import platforms
-from ..decoration import Sky
 
+from .background import Background
 from .platform import Platform
 from .player_hat import Hat
 
@@ -20,7 +20,7 @@ class Menu:
         self.show_gameplay = show_gameplay
 
         self.platforms = self.create_plateforms()
-        # self.sky = Sky(8, "overworld")
+        self.background = Background(self.paths)
         self.hat = self.create_hat()
 
         # Input timer
@@ -88,12 +88,21 @@ class Menu:
         self.allow_input = True
 
     def run(self):
-        # self.sky.draw(self.display_surface)
-        self.input_timer()
-        self.handle_input()
+        # Background
+        self.background.draw()
+
+        # Platform paths
         self.draw_paths()
+
+        # Platforms
         self.platforms.update()
         self.platforms.draw(self.display_surface)
+
+        # Hat: player indicator
         self.hat.update()
-        self.hat.draw(self.display_surface)
         self.hat.sprite.move()
+        self.hat.draw(self.display_surface)
+
+        # Inputs
+        self.input_timer()
+        self.handle_input()
