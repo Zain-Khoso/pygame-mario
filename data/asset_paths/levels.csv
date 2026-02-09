@@ -1,4 +1,4 @@
 type,name,path
-level,1,data/levels/1/
-level,2,data/levels/2/
-level,3,data/levels/3/
+level,0,data/levels/1/
+level,1,data/levels/2/
+level,2,data/levels/3/

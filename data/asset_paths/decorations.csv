@@ -1,7 +1,6 @@
 type,name,path
-image,grass,assets/graphics/decoration/grass.png
 image,sky_top,assets/graphics/decoration/sky/top.png
 image,sky_middle,assets/graphics/decoration/sky/middle.png
 image,sky_bottom,assets/graphics/decoration/sky/bottom.png
 animation,clouds,assets/graphics/decoration/clouds/
-animation,water,assets/graphics/decoration/water/
+animation,ocean,assets/graphics/decoration/ocean/
