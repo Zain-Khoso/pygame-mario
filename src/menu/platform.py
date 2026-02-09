@@ -2,7 +2,7 @@
 import pygame
 
 # Local Imports
-from ..settings import player_hat_speed
+from ..settings import player_hat_speed, text_color
 from ..support import import_folder
 from ..state import State
 
@@ -41,12 +41,14 @@ class Platform(pygame.sprite.Sprite):
         if self.frame >= len(self.frames):
             self.frame = 0
 
-        self.image = self.frames[int(self.frame)]
+        new_frame = self.frames[int(self.frame)].copy()
+
+        if self.locked:
+            silhouette = new_frame.copy()
+            silhouette.fill(text_color, None, pygame.BLEND_RGBA_MULT)
+            new_frame.blit(silhouette, (0, 0))
+
+        self.image = new_frame
 
     def update(self):
-        if self.locked:
-            tint_surf = self.image.copy()
-            tint_surf.fill("black", None, pygame.BLEND_RGBA_MULT)
-            self.image.blit(tint_surf, (0, 0))
-        else:
-            self.animate()
+        self.animate()
