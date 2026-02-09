@@ -8,22 +8,22 @@ from ..support import import_folder
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, state: State, paths_audio, create_jump_particles):
+    def __init__(self, pos, state: State, paths, create_jump_particles):
         super().__init__()
+
+        # Setup
         self.display_surface = pygame.display.get_surface()
         self.state = state
+        self.paths = paths
         self.create_jump_particles = create_jump_particles
 
-        # Loading assets.
-        self.animations_dir = "./assets/graphics/character/"
-        self.dust_particles_dir = "./assets/graphics/character/dust_particles/run/"
-
+        # Asset loading
         self.animations = {"idle": [], "run": [], "jump": [], "fall": []}
-        self.dust_particles = import_folder(self.dust_particles_dir)
+        self.dust = import_folder(self.paths["character"]["animation"]["dust_run"])
 
         self.import_character_assets()
 
-        # Sprite
+        # Animation
         self.frame = 0
         self.dust_frame = 0
         self.animation_speed = 0.15
@@ -49,16 +49,16 @@ class Player(pygame.sprite.Sprite):
         self.invincibility_time = 0
 
         # Audio
-        self.jump_sound = pygame.mixer.Sound(paths_audio["effect"]["jump"])
+        self.jump_sound = pygame.mixer.Sound(self.paths["audio"]["effect"]["jump"])
         self.jump_sound.set_volume(0.2)
-        self.hit_sound = pygame.mixer.Sound(paths_audio["effect"]["hit"])
+        self.hit_sound = pygame.mixer.Sound(self.paths["audio"]["effect"]["hit"])
         self.hit_sound.set_volume(0.2)
 
     def import_character_assets(self):
         for animation in self.animations.keys():
-            full_path = self.animations_dir + animation
+            path = self.paths["character"]["animation"][animation]
 
-            self.animations[animation] = import_folder(full_path)
+            self.animations[animation] = import_folder(path)
 
     def animate(self):
         animation = self.animations[self.status]
@@ -88,10 +88,10 @@ class Player(pygame.sprite.Sprite):
 
         self.dust_frame += self.dust_animation_speed
 
-        if self.dust_frame >= len(self.dust_particles):
+        if self.dust_frame >= len(self.dust):
             self.dust_frame = 0
 
-        particle = self.dust_particles[int(self.dust_frame)]
+        particle = self.dust[int(self.dust_frame)]
 
         if self.facing_right:
             pos = self.rect.bottomleft - pygame.math.Vector2(6, 10)
