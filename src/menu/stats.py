@@ -2,7 +2,7 @@
 import pygame
 
 # Local Imports
-from ..settings import text_color
+from ..settings import text_color, text_size
 from ..state import State
 
 
@@ -20,7 +20,7 @@ class Stats:
 
         self.coin = pygame.image.load(path_coin).convert_alpha()
         self.star = pygame.image.load(path_star).convert_alpha()
-        self.font = pygame.font.Font(path_font, 30)
+        self.font = pygame.font.Font(path_font, text_size)
 
         self.coin = pygame.transform.scale(self.coin, (32, 32))
         self.star = pygame.transform.scale(self.star, (32, 32))
