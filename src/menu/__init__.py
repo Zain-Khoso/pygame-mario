@@ -7,7 +7,7 @@ from ..settings import platforms
 
 from .background import Background
 from .platform import Platform
-from .player_hat import Hat
+from .hat import Hat
 from .stats import Stats
 
 
