@@ -1,5 +1,5 @@
 # Lib Imports
-import pygame
+import sys, pygame
 
 # Local Imports
 from ..state import State
@@ -54,38 +54,32 @@ class Menu:
         ]
         pygame.draw.lines(self.display_surface, "#a04f45", False, points, 6)
 
-    def handle_input(self):
-        keys = pygame.key.get_pressed()
+    def handle_events(self, event):
+        if not self.allow_input:
+            if pygame.time.get_ticks() > (self.start_time + self.timer_length):
+                self.allow_input = True
 
         if self.hat.sprite.moving or not self.allow_input:
             return
 
-        if (
-            keys[pygame.K_RIGHT]
+        if event.key == pygame.K_ESCAPE:
+            pygame.quit()
+            sys.exit()
+        elif (
+            event.key == pygame.K_RIGHT
             and self.state.current_level < self.state.unlocked_levels
         ):
             self.hat.sprite.update_vector(1)
             self.state.change_level(1)
             self.hat.sprite.moving = True
 
-        elif keys[pygame.K_LEFT] and self.state.current_level > 0:
+        elif event.key == pygame.K_LEFT and self.state.current_level > 0:
             self.hat.sprite.update_vector(-1)
             self.state.change_level(-1)
             self.hat.sprite.moving = True
 
-        elif keys[pygame.K_SPACE]:
+        elif event.key == pygame.K_SPACE:
             self.show_gameplay()
-
-    def input_timer(self):
-        if self.allow_input:
-            return
-
-        current_time = pygame.time.get_ticks()
-
-        if current_time <= (self.start_time + self.timer_length):
-            return
-
-        self.allow_input = True
 
     def run(self):
         # Background
@@ -102,7 +96,3 @@ class Menu:
         self.hat.update()
         self.hat.sprite.move()
         self.hat.draw(self.display_surface)
-
-        # Inputs
-        self.input_timer()
-        self.handle_input()

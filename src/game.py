@@ -96,6 +96,15 @@ class Game:
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame.KEYDOWN:
+                try:
+                    if self.state.in_game:
+                        self.gameplay.handle_events(event)
+                    else:
+                        self.menu.handle_events(event)
+                except AttributeError:
+                    pass
+
     def run(self):
         while True:
 

@@ -269,6 +269,11 @@ class Gameplay:
             self.coin_sound.play()
             self.state.add_coin(coin)
 
+    def handle_events(self, event):
+        if event.key == pygame.K_ESCAPE:
+            self.state.reset_for_level()
+            self.show_menu()
+
     def draw(self):
         self.scroll_x()
 
