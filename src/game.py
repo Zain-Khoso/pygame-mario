@@ -38,7 +38,7 @@ class Game:
         self.music_gameplay.set_volume(0.1)
 
         # Game state
-        self.state = State()
+        self.state = State(len(self.paths["levels"]["level"].keys()))
         self.state.load()
 
         # Game initialization

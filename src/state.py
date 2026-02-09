@@ -6,7 +6,7 @@ from .settings import csv_state
 
 
 class State:
-    def __init__(self):
+    def __init__(self, max_levels):
         # Setup
         self.unlocked_levels = 0
         self.current_level = 0
@@ -20,7 +20,9 @@ class State:
         self.total_xp = 0
         self.current_xp = 0
 
+        # In game state
         self.in_game = False
+        self.max_levels = max_levels
 
     def __str__(self):
         state = {
@@ -108,7 +110,7 @@ class State:
     def unlock_level(self):
         new_level = self.current_level + 1
 
-        if self.unlocked_levels < new_level:
+        if self.unlocked_levels < new_level < self.max_levels:
             self.unlocked_levels += 1
 
     def change_level(self, by: int):

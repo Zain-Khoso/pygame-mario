@@ -3,7 +3,7 @@ import sys, pygame
 
 # Local Imports
 from ..state import State
-from ..settings import platforms
+from ..settings import platforms_pos
 
 from .background import Background
 from .platform import Platform
@@ -33,7 +33,7 @@ class Menu:
     def create_plateforms(self):
         group = pygame.sprite.Group()
 
-        for index, position in enumerate(platforms):
+        for index, position in enumerate(platforms_pos):
             group.add(Platform(position, self.state, index, self.paths))
 
         return group
@@ -51,7 +51,7 @@ class Menu:
 
         points = [
             position
-            for index, position in enumerate(platforms)
+            for index, position in enumerate(platforms_pos)
             if index <= self.state.unlocked_levels
         ]
         pygame.draw.lines(self.display_surface, "#a04f45", False, points, 6)

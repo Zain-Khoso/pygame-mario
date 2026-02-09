@@ -20,7 +20,7 @@ csv_terrain = "data/asset_paths/terrain.csv"
 csv_ui = "data/asset_paths/ui.csv"
 
 # Menu
-platforms = [
+platforms_pos = [
     (110, 400),
     (300, 220),
     (480, 610),
