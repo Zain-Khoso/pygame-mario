@@ -6,7 +6,6 @@ from .settings import *
 from .menu import Menu
 from .gameplay import Gameplay
 from .state import State
-from .ui import UI
 
 
 class Game:
@@ -44,7 +43,6 @@ class Game:
 
         # Game initialization
         self.show_menu()
-        self.ui = UI(self.state, self.paths)
 
     def load_file_paths(self, file_path):
         paths = {}
@@ -87,10 +85,8 @@ class Game:
 
     def load_screen(self):
         if self.state.in_game:
-            self.gameplay.draw()
-            self.ui.show_health()
-            self.ui.show_coins()
             self.check_game_over()
+            self.gameplay.draw()
         else:
             self.menu.run()
 
