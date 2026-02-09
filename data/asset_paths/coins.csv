@@ -1,4 +1,5 @@
 type,name,path
 image,silver,assets/graphics/coins/silver.png
+image,gold,assets/graphics/coins/gold.png
 animation,silver,assets/graphics/coins/silver/
 animation,gold,assets/graphics/coins/gold/

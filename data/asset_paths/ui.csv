@@ -1,3 +1,4 @@
 type,name,path
 font,arcade_pi,assets/graphics/ui/arcade_pi.ttf
 image,health_bar,assets/graphics/ui/health_bar.png
+image,star,assets/graphics/ui/star.png
