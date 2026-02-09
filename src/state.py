@@ -3,7 +3,6 @@ import csv, json
 
 # Local Imports
 from .settings import csv_state
-from .tiles import Coin
 
 
 class State:
@@ -81,7 +80,7 @@ class State:
     def save_coins(self):
         self.total_coins += self.current_coins
 
-    def add_coin(self, coin: Coin):
+    def add_coin(self, coin):
         self.current_coins += coin.value
 
     def set_in_game(self, in_game=False):
