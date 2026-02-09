@@ -18,10 +18,10 @@ def import_folder(path):
 
 
 # Use to import tailed csv data.
-def import_layout_csv(path):
+def import_layout_csv(dir_path, filename):
     layout = []
 
-    with open(path) as map:
+    with open(dir_path + filename + ".csv") as map:
         file = reader(map, delimiter=",")
 
         for row in file:
