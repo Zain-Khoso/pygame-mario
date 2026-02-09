@@ -1,6 +1,7 @@
 # Layout
 vertical_tile_number = 11
 tile_size = 64
+horizon_point = 8
 
 # Screen
 screen_width = 1200
@@ -28,3 +29,6 @@ platforms = [
     (1050, 400),
 ]
 player_hat_speed = 8
+
+# Gameplay
+clouds_num = 20
