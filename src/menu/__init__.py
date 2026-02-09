@@ -8,6 +8,7 @@ from ..settings import platforms
 from .background import Background
 from .platform import Platform
 from .player_hat import Hat
+from .stats import Stats
 
 
 class Menu:
@@ -22,6 +23,7 @@ class Menu:
         self.platforms = self.create_plateforms()
         self.background = Background(self.paths)
         self.hat = self.create_hat()
+        self.stats = Stats(self.state, self.paths)
 
         # Input timer
         self.start_time = pygame.time.get_ticks()
@@ -96,3 +98,6 @@ class Menu:
         self.hat.update()
         self.hat.sprite.move()
         self.hat.draw(self.display_surface)
+
+        # Stats
+        self.stats.draw()
