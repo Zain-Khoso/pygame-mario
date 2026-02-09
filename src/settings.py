@@ -31,7 +31,7 @@ platforms_pos = [
 player_hat_speed = 8
 
 # Gameplay
-clouds_num = 106
+clouds_num = 32
 
 # UI
 text_size = 30
