@@ -17,27 +17,32 @@ class Background:
         path_sky_top = paths["decorations"]["image"]["sky_top"]
         path_sky_middle = paths["decorations"]["image"]["sky_middle"]
         path_sky_bottom = paths["decorations"]["image"]["sky_bottom"]
-        path_clouds = paths["decorations"]["animation"]["clouds"]
+        path_palms = paths["menu"]["animation"]["palms"]
+        path_clouds = paths["menu"]["animation"]["clouds"]
 
         self.top = pygame.image.load(path_sky_top).convert()
         self.middle = pygame.image.load(path_sky_middle).convert()
         self.bottom = pygame.image.load(path_sky_bottom).convert()
+        palm_surfaces = [choice(import_folder(path_palms)) for _ in range(10)]
         cloud_surfaces = [choice(import_folder(path_clouds)) for _ in range(10)]
-        self.clouds = []
+        self.decorations = []
 
         # Asset editing
         self.top = pygame.transform.scale(self.top, (screen_width, tile_size))
         self.middle = pygame.transform.scale(self.middle, (screen_width, tile_size))
         self.bottom = pygame.transform.scale(self.bottom, (screen_width, tile_size))
 
+        for palm in palm_surfaces:
+            x = randint(0, screen_width)
+            y = (self.horizon * tile_size) - randint(0, 50)
+            rect = palm.get_rect(topleft=(x, y))
+            self.decorations.append((palm, rect))
+
         for cloud in cloud_surfaces:
             x = randint(0, screen_width)
             y = randint(0, (self.horizon * tile_size) - 100)
-
-            cloud.fill("#CCA699", None, pygame.BLEND_RGBA_MULT)
-
             rect = cloud.get_rect(midbottom=(x, y))
-            self.clouds.append((cloud, rect))
+            self.decorations.append((cloud, rect))
 
     def draw(self):
         for row in range(vertical_tile_number):
@@ -49,5 +54,5 @@ class Background:
             else:
                 self.display_surface.blit(self.bottom, (0, y))
 
-        for surface in self.clouds:
+        for surface in self.decorations:
             self.display_surface.blit(surface[0], surface[1])

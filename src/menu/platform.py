@@ -15,7 +15,7 @@ class Platform(pygame.sprite.Sprite):
         self.position = pos
         self.state = state
         self.locked = index > self.state.unlocked_levels
-        path = paths["menu"]["animation"][("level_%s" % str(index + 1))]
+        path = paths["menu"]["animation"][("platform_%s" % str(index + 1))]
 
         # Animation
         self.frame = 0

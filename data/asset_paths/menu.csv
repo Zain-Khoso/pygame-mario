@@ -1,7 +1,9 @@
 type,name,path
-animation,level_1,assets/graphics/menu/1/
-animation,level_2,assets/graphics/menu/2/
-animation,level_3,assets/graphics/menu/3/
-animation,level_4,assets/graphics/menu/4/
-animation,level_5,assets/graphics/menu/5/
-animation,level_6,assets/graphics/menu/6/
+animation,palms,assets/graphics/menu/palms/
+animation,clouds,assets/graphics/menu/clouds/
+animation,platform_1,assets/graphics/menu/platforms/1/
+animation,platform_2,assets/graphics/menu/platforms/2/
+animation,platform_3,assets/graphics/menu/platforms/3/
+animation,platform_4,assets/graphics/menu/platforms/4/
+animation,platform_5,assets/graphics/menu/platforms/5/
+animation,platform_6,assets/graphics/menu/platforms/6/
