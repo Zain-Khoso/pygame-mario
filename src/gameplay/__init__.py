@@ -226,9 +226,9 @@ class Gameplay:
         if self.player.sprite.rect.top <= screen_height:
             return
 
-        self.show_menu()
         self.state.reset()
         self.state.save()
+        self.show_menu()
 
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, True):
