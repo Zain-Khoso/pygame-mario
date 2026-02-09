@@ -1,4 +1,6 @@
 # Local Imports
+from ...settings import tile_size
+
 from .animated_tile import AnimatedTile
 
 
@@ -7,13 +9,13 @@ class Palm(AnimatedTile):
         # Setup
         if type == "bg":
             path_frames = paths["terrain"]["animation"]["palm_bg"]
-            y = y - 32
+            y = y - (tile_size * 1.2)
         elif type == "large":
             path_frames = paths["terrain"]["animation"]["palm_large"]
-            y = y - 32
+            y = y - (tile_size * 1.2)
         else:
             path_frames = paths["terrain"]["animation"]["palm_small"]
-            y = y - 24
+            y = y - (tile_size * 0.5)
 
         super().__init__(x, y, path_frames)
 
