@@ -11,6 +11,7 @@ from .decorations import Sky, Ocean, Clouds
 from .particles import ParticleEffect
 from .player import Player
 from .tiles.enemy import Enemy
+from .ui import UI
 
 
 class Gameplay:
@@ -52,6 +53,7 @@ class Gameplay:
         self.sky = Sky(self.paths)
         self.clouds = Clouds(self.paths, self.world_width)
         self.ocean = Ocean(self.paths, self.world_width)
+        self.ui = UI(self.state, self.paths)
 
         # Audio
         self.coin_sound = pygame.mixer.Sound(self.paths["audio"]["effect"]["coin"])
@@ -329,6 +331,10 @@ class Gameplay:
         # Ocean
         self.ocean.draw(self.world_shift)
 
-        # Menu
+        # UI
+        self.ui.show_health()
+        self.ui.show_coins()
+
+        # Player functionality
         self.check_death()
         self.check_win()
