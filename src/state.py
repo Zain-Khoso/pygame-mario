@@ -70,8 +70,6 @@ class State:
 
     def save(self):
         state = json.loads(str(self))
-        state["current_level"] = 0
-        state["current_health"] = 0
         state["current_coins"] = 0
 
         with open(csv_state, "w") as raw:

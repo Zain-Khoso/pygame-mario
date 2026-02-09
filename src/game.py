@@ -80,6 +80,7 @@ class Game:
         if self.state.current_health > 0:
             return
 
+        print("run")
         self.state.reset()
         self.show_menu()
 

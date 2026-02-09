@@ -228,10 +228,13 @@ class Gameplay:
 
         self.show_menu()
         self.state.reset()
+        self.state.save()
 
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, True):
             self.state.unlock_level()
+            self.state.save_coins()
+            self.state.save()
             self.state.reset_for_level()
             self.show_menu()
 
