@@ -340,8 +340,7 @@ class Gameplay:
         self.ocean.draw(self.world_shift)
 
         # UI
-        self.ui.show_health()
-        self.ui.show_coins()
+        self.ui.draw()
 
         # Player functionality
         self.check_death()
