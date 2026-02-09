@@ -34,4 +34,8 @@ player_hat_speed = 8
 clouds_num = 106
 
 # UI
+text_size = 30
 text_color = "#33323d"
+healthbar_color = "#dc4949"
+healthbar_width = 192
+healthbar_height = 64
