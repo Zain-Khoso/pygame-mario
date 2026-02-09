@@ -14,6 +14,8 @@ class Enemy(AnimatedTile):
         path_graphics = paths["enemy"]["animation"]["run"]
         super().__init__(x, y, path_graphics)
 
+        self.reward = 1
+
         # Offset
         offset_x = x + (tile_size // 2)
         offset_y = y + tile_size

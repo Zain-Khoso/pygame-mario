@@ -40,7 +40,7 @@ class Stats:
         self.display_surface.blit(text, text_rect)
 
     def show_points(self):
-        amount = str(200)
+        amount = str(self.state.total_xp)
         x = self.star_rect.centerx + 32
         y = self.star_rect.centery + 4
 

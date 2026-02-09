@@ -54,7 +54,7 @@ class UI:
         pygame.draw.rect(self.display_surface, healthbar_color, bar_rect)
 
     def show_points(self):
-        amount = str(10)
+        amount = str(self.state.current_xp)
         text_pos = (self.star_rect.right + 8, self.star_rect.centery + 4)
 
         text = self.font.render(amount, False, text_color)

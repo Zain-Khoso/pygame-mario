@@ -17,6 +17,9 @@ class State:
         self.total_coins = 0
         self.current_coins = 0
 
+        self.total_xp = 0
+        self.current_xp = 0
+
         self.in_game = False
 
     def __str__(self):
@@ -27,6 +30,8 @@ class State:
             "current_health": self.current_health,
             "total_coins": self.total_coins,
             "current_coins": self.current_coins,
+            "total_xp": self.total_xp,
+            "current_xp": self.current_xp,
         }
 
         return json.dumps(state)
@@ -43,6 +48,8 @@ class State:
                 self.current_health = int(state["current_health"])
                 self.total_coins = int(state["total_coins"])
                 self.current_coins = int(state["current_coins"])
+                self.total_xp = int(state["total_xp"])
+                self.current_xp = int(state["current_xp"])
         except FileNotFoundError:
             self.make_state_file()
             self.load()
@@ -55,6 +62,8 @@ class State:
             "current_health": 100,
             "total_coins": 0,
             "current_coins": 0,
+            "total_xp": 0,
+            "current_xp": 0,
         }
 
         try:
@@ -71,6 +80,7 @@ class State:
     def save(self):
         state = json.loads(str(self))
         state["current_coins"] = 0
+        state["current_xp"] = 0
 
         with open(csv_state, "w") as raw:
             file = csv.DictWriter(raw, fieldnames=state.keys())
@@ -87,12 +97,19 @@ class State:
         self.total_coins = 0
         self.current_coins = 0
 
+        self.total_xp = 0
+        self.current_xp = 0
+
     def reset_for_level(self):
         self.current_health = 100
         self.current_coins = 0
+        self.current_xp = 0
 
     def unlock_level(self):
-        self.unlocked_levels += 1
+        new_level = self.current_level + 1
+
+        if self.unlocked_levels < new_level:
+            self.unlocked_levels += 1
 
     def change_level(self, by: int):
         self.current_level += by
@@ -105,6 +122,12 @@ class State:
 
     def add_coin(self, coin):
         self.current_coins += coin.value
+
+    def save_xp(self):
+        self.total_xp += self.current_xp
+
+    def add_xp(self, enemy):
+        self.current_xp += enemy.reward
 
     def set_in_game(self, in_game=False):
         self.in_game = in_game

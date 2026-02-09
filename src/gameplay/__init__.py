@@ -234,6 +234,7 @@ class Gameplay:
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, True):
             self.state.unlock_level()
             self.state.save_coins()
+            self.state.save_xp()
             self.state.save()
             self.state.reset_for_level()
             self.show_menu()
@@ -256,6 +257,7 @@ class Gameplay:
                 enemy_top < player_bottom < enemy_center
                 and self.player.sprite.direction.y >= 0
             ):
+                self.state.add_xp(enemy)
                 self.player.sprite.jump()
                 self.explosions.add(
                     ParticleEffect(enemy.rect.center, self.paths, "explosion")
