@@ -2,6 +2,7 @@
 import pygame
 
 # Local Imports
+from ..settings import text_color
 from ..state import State
 
 
@@ -38,7 +39,7 @@ class UI:
 
     def show_coins(self):
         amount = str(self.state.current_coins)
-        text = self.font.render(amount, False, "#33323d")
+        text = self.font.render(amount, False, text_color)
         text_rect = text.get_rect(
             midleft=(self.coin_rect.centerx + 20, self.coin_rect.centery)
         )

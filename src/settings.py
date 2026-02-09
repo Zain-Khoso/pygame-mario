@@ -32,3 +32,6 @@ player_hat_speed = 8
 
 # Gameplay
 clouds_num = 106
+
+# UI
+text_color = "#33323d"
