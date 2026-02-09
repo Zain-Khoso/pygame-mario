@@ -31,4 +31,4 @@ platforms = [
 player_hat_speed = 8
 
 # Gameplay
-clouds_num = 20
+clouds_num = 106
